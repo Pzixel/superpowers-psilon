@@ -1,0 +1,7 @@
+interface:
+  display_name: "Superpowers: Brainstorming (psilon)"
+  short_description: "Clarify ambiguous designs proportionately"
+  default_prompt: "Use $superpowers-brainstorming-psilon to clarify this ambiguous change, compare materially different approaches, and recommend a proportionate design."
+
+policy:
+  allow_implicit_invocation: true

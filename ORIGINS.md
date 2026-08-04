@@ -1,9 +1,10 @@
 # Upstream origins
 
-These skills preserve their Superpowers lineage in their names and skill bodies. They were forked from the managed `superpowers` plugin version 6.2.0 on 2026-08-03.
+These skills preserve their Superpowers lineage in their names and skill bodies. They were forked from the managed `superpowers` plugin version 6.2.0 beginning on 2026-08-03.
 
 | Local skill | Upstream skill | Local changes |
 |---|---|---|
+| `superpowers-brainstorming-psilon` | `superpowers:brainstorming` | Narrow activation, proportional exploration, removal of mandatory specs, approval loops, visual tooling, and plan chaining |
 | `superpowers-receiving-code-review-psilon` | `superpowers:receiving-code-review` | Provenance name and activation metadata only |
 | `superpowers-systematic-debugging-psilon` | `superpowers:systematic-debugging` | Narrow activation, proportional depth, removal of mandatory TDD and completion-skill chaining |
 | `superpowers-verification-before-completion-psilon` | `superpowers:verification-before-completion` | High-risk activation and outcome-proportionate verification |
