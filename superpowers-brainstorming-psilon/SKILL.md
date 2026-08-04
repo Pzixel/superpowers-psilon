@@ -1,6 +1,6 @@
 ---
 name: superpowers-brainstorming-psilon
-description: Use when a requested change has unresolved product intent, ambiguous success criteria, materially different implementation approaches, architectural or interface choices, or multiple coupled subsystems that need decomposition before implementation. Clarify the consequential uncertainty, compare real alternatives, and recommend a proportionate design. Do not use for clear local changes with an established contract, routine configuration, mechanical edits, or when the user has already supplied an adequate design.
+description: Use when a non-trivial requested change has unresolved product intent or success criteria that would materially alter architecture, interfaces, persistent state, multi-component behavior, or long-term maintenance, or when coupled subsystems need decomposition before implementation. Clarify consequential uncertainty, compare materially different approaches, and recommend a proportionate design. Do not use for a clear local change, a single small decision, routine configuration, mechanical edits, or when the user has already supplied an adequate design.
 ---
 
 # Brainstorming Ideas Into Designs

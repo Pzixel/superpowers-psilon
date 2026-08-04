@@ -1,0 +1,7 @@
+interface:
+  display_name: "Superpowers: Writing Plans (psilon)"
+  short_description: "Plan complex work at outcome level"
+  default_prompt: "Use $superpowers-writing-plans-psilon to produce a proportionate implementation plan for this complex, multi-stage task."
+
+policy:
+  allow_implicit_invocation: true
