@@ -5,44 +5,92 @@ description: Use after a coherent implementation when the integrated diff affect
 
 # Requesting Code Review
 
-> Forked from `superpowers:requesting-code-review` v6.2.0. Local changes: one high-risk integration review instead of automatic per-task review and fix loops.
+> **Codex 5.6 adaptation:** The frontmatter description is the scope gate. Review one coherent integrated change at a risk boundary; add earlier or repeated review only when distinct evidence shows that it will materially reduce risk.
 
-## Goal
+Dispatch a code reviewer subagent to catch issues before they cascade. The reviewer gets precisely crafted context for evaluation — never your session's history.
 
-Obtain an independent challenge to a coherent high-risk change at the point where cross-component defects are visible and findings can still be fixed.
+**Core principle:** Review at meaningful risk boundaries with precise, independent context.
 
-## Prepare the review
+## When to Request Review
 
-Establish:
+**Use when the trigger matches:**
+- After a coherent high-risk integrated implementation
+- Before release or merge when the diff crosses a listed risk boundary
+- When the user explicitly requests independent review
 
-- the exact requirements and supported outcomes;
-- the diff or artifact range under review;
-- governing repository rules and external contracts;
-- material risks the change can introduce;
-- verification already performed and genuine remaining gaps.
+**Optional only with a concrete reason:**
+- When stuck and an independent perspective can test a named uncertainty
+- Before a risky refactor when a baseline review materially reduces risk
+- After a complex fix whose integrated effects remain uncertain
 
-Pass source artifacts and requirements, not the implementer's conclusions or a coached severity judgment. Keep the reviewer read-only.
+## How to Request
 
-## Review request
+**1. Get git SHAs:**
+```bash
+BASE_SHA=$(git merge-base HEAD origin/main)  # or the recorded start of the coherent change
+HEAD_SHA=$(git rev-parse HEAD)
+```
 
-Ask one capable reviewer to examine:
+**2. Dispatch code reviewer subagent:**
 
-1. requirement and contract compliance;
-2. cross-component integration and lifecycle behavior;
-3. security, data integrity, concurrency, migration, rollback, and operational risks that apply;
-4. plausible regressions not covered by current evidence;
-5. unnecessary behavior or complexity introduced by the change.
+Dispatch a read-only reviewer subagent with isolated or minimally forked context, filling the template at [code-reviewer.md](code-reviewer.md).
 
-Require actionable findings with severity, evidence, a tight location, impact, and the smallest safe correction. Require the reviewer to say when a claim cannot be verified from the supplied artifacts.
+**Placeholders:**
+- `{DESCRIPTION}` - Brief summary of what you built
+- `{PLAN_OR_REQUIREMENTS}` - What it should do
+- `{BASE_SHA}` - Starting commit
+- `{HEAD_SHA}` - Ending commit
 
-## Handle findings
+**3. Act on feedback:**
+- Fix Critical issues immediately
+- Fix Important issues before proceeding
+- Note Minor issues for later
+- Push back if reviewer is wrong (with reasoning)
 
-- Verify every finding against the code, contracts, and runtime reality before changing anything.
-- Fix valid release-blocking findings and rerun the affected verification.
-- Push back with evidence when a finding is wrong or outside the supported contract.
-- Use at most one scoped re-review when material fixes changed the risk surface.
-- Do not create open-ended reviewer/fixer loops or treat minor preferences as blockers.
+## Example
 
-If no independent reviewer is available, perform the same contract/risk pass inline and disclose the lack of independence when it is material.
+```
+[Completed a coherent high-risk feature spanning verification and repair behavior]
 
-The terminal state is a reviewed integrated change with material findings resolved or explicitly reported—not another review because a workflow demands one.
+You: Let me request one integration review before completion.
+
+BASE_SHA=$(git merge-base HEAD origin/main)
+HEAD_SHA=$(git rev-parse HEAD)
+
+[Dispatch code reviewer subagent]
+  DESCRIPTION: Added verifyIndex() and repairIndex() with 4 issue types
+  PLAN_OR_REQUIREMENTS: Task 2 from docs/superpowers/plans/deployment-plan.md
+  BASE_SHA: a7981ec
+  HEAD_SHA: 3df7661
+
+[Subagent returns]:
+  Strengths: Clean architecture, real tests
+  Issues:
+    Important: Missing progress indicators
+    Minor: Magic number (100) for reporting interval
+  Assessment: Ready to proceed
+
+You: [Verify the finding, fix the progress indicators, and run focused verification]
+```
+
+## Common Rationalizations
+
+| Excuse | Reality |
+|--------|---------|
+| "I'll just review this qualifying high-risk diff myself" | Independent review is valuable specifically because the change crossed the trigger's risk boundary. Dispatch a reviewer with the diff and requirements; only findings return to the coordinating context. |
+| "The reviewer needs my whole session history to understand the change" | Hand it precisely crafted context, never your session's history. That keeps the reviewer on the work product, not your thought process. |
+
+## Red Flags
+
+**Never:**
+- Skip review after the trigger's risk conditions have substantively matched
+- Ignore Critical issues
+- Proceed with unfixed Important issues
+- Argue with valid technical feedback
+
+**If reviewer wrong:**
+- Push back with technical reasoning
+- Show code/tests that prove it works
+- Request clarification
+
+See template at: [code-reviewer.md](code-reviewer.md)

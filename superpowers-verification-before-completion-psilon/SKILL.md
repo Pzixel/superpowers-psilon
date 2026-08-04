@@ -5,68 +5,114 @@ description: Use before claiming completion when work affects production, securi
 
 # Verification Before Completion
 
-> Forked from `superpowers:verification-before-completion` v6.2.0. Local changes: high-risk activation and outcome-proportionate verification instead of universal ceremony.
+> **Codex 5.6 adaptation:** The frontmatter description is the scope gate. Match the breadth of fresh evidence to the completion claim after the last relevant change; do not turn this high-risk gate into repeated full-suite ceremony for low-risk or unchanged work.
 
 ## Overview
 
-**Core principle:** Evidence before claims.
+**Core principle:** Evidence before claims, always.
 
-Do not claim a high-risk outcome is complete, fixed, deployed, or passing without fresh evidence sufficient for that exact claim.
+**Violating the letter of this rule is violating the spirit of this rule.**
 
-## The Gate
+## The Iron Law
 
-Before making a completion claim in this skill's trigger scope:
+```
+NO COMPLETION CLAIMS WITHOUT FRESH VERIFICATION EVIDENCE
+```
 
-1. **Identify** the observable outcome and the evidence that would prove it.
-2. **Run or inspect** the strongest proportionate verification after the last relevant change.
-3. **Read** the complete relevant output, exit status, failure count, runtime state, logs, or metrics.
-4. **Compare** the evidence with the claim and governing requirements.
-5. **Report** the supported status and every material gap. Claim completion only when no required gap remains.
+If you have not gathered fresh evidence after the last relevant change, you cannot claim the affected outcome passes.
 
-Verification should be complete for the claim, not mechanically exhaustive. Do not run unrelated suites, recreate already-fresh evidence, or add process artifacts that cannot affect the conclusion.
+## The Gate Function
 
-## Claim-to-Evidence Mapping
+```
+BEFORE claiming any status or expressing satisfaction:
 
-| Claim | Evidence normally required | Not sufficient |
-|---|---|---|
-| Focused tests pass | Fresh targeted test output with zero failures | An earlier run or "should pass" |
-| Full suite passes | Fresh full-suite output with zero failures | A targeted subset |
-| Build succeeds | Fresh build output with exit status 0 | Linter output |
-| Bug is fixed | Original symptom or authoritative observable boundary now succeeds | Code changed or a nearby unit test passes |
-| Regression test is meaningful | Test fails without the fix and passes with it, when that red-green check is safe and warranted | Test passes once |
-| Requirements are met | Each applicable requirement is tied to code or observed behavior | Tests alone when requirements exceed them |
-| Production change is complete | Intended state is active across target scope, durably converged, and observed for regressions | CI success or deployment start |
-| Delegated work is complete | Primary inspection of the resulting diff and relevant verification | Agent success report |
+1. IDENTIFY: What command proves this claim?
+2. RUN: Execute the command or observation set sufficient for the claim's scope (fresh, complete for that scope)
+3. READ: Relevant full output, check exit code, count failures, and inspect outcome evidence
+4. VERIFY: Does output confirm the claim?
+   - If NO: State actual status with evidence
+   - If YES: State claim WITH evidence
+5. ONLY THEN: Make the claim
 
-## Proportional Verification
+Skip any step = lying, not verifying
+```
 
-Choose evidence by blast radius and uncertainty:
+## Common Failures
 
-- **Focused code change:** run the affected formatter, compiler, lint, or focused test that can falsify the change.
-- **Cross-boundary behavior:** exercise the real boundary or the smallest integration surface that owns the decision.
-- **Data or migration change:** verify reachable old and new states, invariants, and recovery behavior.
-- **Production behavior:** verify rollout state, live behavior, relevant logs and metrics, durable convergence, and a task-appropriate observation window.
-- **Security or destructive behavior:** verify exact scope, authorization, safeguards, outcome, and rollback or recovery evidence.
+| Claim | Requires | Not Sufficient |
+|-------|----------|----------------|
+| Tests pass | The test scope named in the claim reports 0 failures | Previous run, "should pass" |
+| Linter clean | Linter output: 0 errors | Partial check, extrapolation |
+| Build succeeds | Build command: exit 0 | Linter passing, logs look good |
+| Bug fixed | Test original symptom: passes | Code changed, assumed fixed |
+| Regression test works | Red-green cycle verified | Test passes once |
+| Agent completed | VCS diff shows changes | Agent reports "success" |
+| Requirements met | Requirement-by-requirement evidence at matching boundaries | Tests passing |
 
-If the strongest required evidence is unavailable, report the task as incomplete and name the missing evidence. Do not substitute confidence or adjacent checks.
+## Red Flags - STOP
 
-## Regression Tests
+- Using "should", "probably", "seems to"
+- Expressing satisfaction before verification ("Great!", "Perfect!", "Done!", etc.)
+- About to commit/push/PR without verification
+- Trusting agent success reports
+- Extrapolating beyond the scope actually verified
+- Thinking "just this once"
+- Tired and wanting work over
+- **ANY wording implying success without having run verification**
 
-Use a red-green check only when a permanent regression test is independently justified and temporarily reverting or toggling the fix is safe. Do not manufacture a test merely to satisfy this skill. Repository test policy and observable contract determine whether the test belongs.
+## Rationalization Prevention
 
-## Requirements and Plans
+| Excuse | Reality |
+|--------|---------|
+| "Should work now" | RUN the verification |
+| "I'm confident" | Confidence ≠ evidence |
+| "Just this once" | No exceptions |
+| "Linter passed" | Linter ≠ compiler |
+| "Agent said success" | Verify independently |
+| "I'm tired" | Exhaustion ≠ excuse |
+| "This narrow check proves the whole system" | Evidence supports only the boundary and scope it exercised |
+| "Different words so rule doesn't apply" | Spirit over letter |
 
-If an authoritative specification or accepted plan exists, verify its applicable outcomes. Do not create or re-read a plan solely because this skill activated. Examples and implementation steps are not additional requirements unless the user or governing contract made them so.
+## Key Patterns
 
-## Red Flags
+**Tests:**
+```
+✅ [Run test command] [See: 34/34 pass] "All tests pass"
+❌ "Should pass now" / "Looks correct"
+```
 
-- Saying "should", "probably", or "seems" while implying success.
-- Relying on verification that predates the last relevant change.
-- Treating lint as compilation, compilation as tests, or CI as production verification.
-- Trusting a subagent or tool summary without inspecting the material result.
-- Running a broad suite when a focused check proves the claim, or a focused check when the claim is broad.
-- Hiding a missing live, integration, migration, or recovery check behind lower-authority evidence.
+**Regression tests when a permanent test qualifies:**
+```
+✅ Observe failure before the fix → apply fix → run the admitted regression test (pass)
+✅ If the initial failure was not captured, use a safe revert or mutation check only when it is proportionate and does not risk user work
+❌ "I've written a regression test" without evidence that it distinguishes the broken behavior
+```
 
-## Reporting
+**Build:**
+```
+✅ [Run build] [See: exit 0] "Build passes"
+❌ "Linter passed" (linter doesn't check compilation)
+```
 
-Lead with the actual outcome. Include the decisive verification performed and any remaining gap. Avoid celebratory language that implies more certainty than the evidence supports.
+**Requirements:**
+```
+✅ Re-read plan → Create checklist → Verify each → Report gaps or completion
+❌ "Tests pass, phase complete"
+```
+
+**Agent delegation:**
+```
+✅ Agent reports success → Check VCS diff → Verify changes → Report actual state
+❌ Trust agent report
+```
+
+## When To Apply
+
+Apply this skill when its frontmatter trigger matches, before:
+- A high-risk success or completion claim
+- Commit, push, pull-request, release, or production-completion claims within that risk scope
+- Declaring a broad multi-component requirement satisfied
+
+For clear low-risk local edits, run ordinary focused verification instead. Do not re-run unchanged gates before moving between internal steps or before delegation unless new evidence or a named risk requires it.
+
+The evidence rule applies to exact claims, paraphrases, and implications of correctness within the verified scope.

@@ -5,8 +5,6 @@ description: Use when the user or an external reviewer supplies concrete code-re
 
 # Code Review Reception
 
-> Forked from `superpowers:receiving-code-review` v6.2.0. Local changes: provenance name and activation metadata only.
-
 ## Overview
 
 Code review requires technical evaluation, not emotional performance.

@@ -1,61 +1,171 @@
 ---
 name: superpowers-dispatching-parallel-agents-psilon
-description: Use when bounded scoping establishes at least two substantial independent workstreams with distinct deliverables, no sequential dependency, and non-overlapping mutable state, and parallel execution will materially reduce wall time. Dispatch focused agents while the primary retains integration ownership. Do not use for facets of one coupled decision, shared-path reconnaissance, related failures that may share a cause, trivial tasks split artificially, overlapping writes, or automatic review ceremony.
+description: Use when bounded scoping establishes at least two substantial independent workstreams with distinct deliverables, no sequential dependency, and non-overlapping mutable state, and parallel execution will materially reduce wall time. Dispatch focused agents while the primary retains integration ownership. Do not use for tasks inside one accepted implementation plan already governed by subagent-driven development, facets of one coupled decision, shared-path reconnaissance, related failures that may share a cause, trivial tasks split artificially, overlapping writes, or automatic review ceremony.
 ---
 
 # Dispatching Parallel Agents
 
-> Forked from `superpowers:dispatching-parallel-agents` v6.2.0. Local changes: substantial-workstream threshold, bounded scoping, exclusive mutable ownership, and removal of automatic one-agent-per-symptom behavior.
+> **Codex 5.6 adaptation:** The frontmatter description is the scope gate. Use fresh or minimally forked agent context where available, assign exclusive mutable scopes, and keep integration and final verification with the primary agent.
 
-## Goal
+## Overview
 
-Reduce elapsed time on genuinely independent work without multiplying coordination cost, duplicated investigation, or conflicting changes.
+You delegate tasks to specialized agents with isolated context. By precisely crafting their instructions and context, you ensure they stay focused and succeed at their task. They should receive only the task-local context they need. In Codex, prefer `fork_turns: "none"` or the smallest useful recent-turn fork when constructing an isolated task; retain full-history inheritance only when the work genuinely depends on it. This also preserves your own context for coordination work.
 
-## Establish independence
+When you have multiple unrelated failures (different test files, different subsystems, different bugs), investigating them sequentially wastes time. Each investigation is independent and can happen in parallel.
 
-Perform the smallest scoping pass needed to answer:
+**Core principle:** Dispatch one agent per independent problem domain. Let them work concurrently.
 
-1. Does each workstream have a distinct deliverable?
-2. Can it be understood with bounded context?
-3. Can it proceed without waiting for another workstream's result?
-4. Is its mutable scope exclusive and non-overlapping?
-5. Is there enough work to outweigh dispatch and integration overhead?
+## When to Use
 
-If independence is unclear, keep the work with the primary agent until the shared boundary is fixed. Related failures remain one investigation until evidence establishes separate causes.
+```dot
+digraph when_to_use {
+    "Multiple failures?" [shape=diamond];
+    "Are they independent?" [shape=diamond];
+    "Single agent investigates all" [shape=box];
+    "One agent per problem domain" [shape=box];
+    "Can they work in parallel?" [shape=diamond];
+    "Sequential agents" [shape=box];
+    "Parallel dispatch" [shape=box];
 
-## Define ownership
+    "Multiple failures?" -> "Are they independent?" [label="yes"];
+    "Are they independent?" -> "Single agent investigates all" [label="no - related"];
+    "Are they independent?" -> "Can they work in parallel?" [label="yes"];
+    "Can they work in parallel?" -> "Parallel dispatch" [label="yes"];
+    "Can they work in parallel?" -> "Sequential agents" [label="no - shared state"];
+}
+```
 
-For each delegated workstream, specify:
+**Use when:**
+- 2+ substantial problem domains with evidence of different root causes
+- Multiple subsystems broken independently
+- Each problem can be understood without context from others
+- No overlapping mutable state between workstreams
+- The wall-time reduction materially exceeds dispatch and integration overhead
 
-- the concrete outcome;
-- exclusive mutable paths or a read-only scope;
-- required contracts and constraints;
-- source artifacts and commands needed to start;
-- prohibited shared-state mutations;
-- expected return: findings or changes, evidence, concerns, and unresolved dependencies.
+**Don't use when:**
+- Tasks are inside one accepted implementation plan governed by `superpowers-subagent-driven-development-psilon`
+- Failures are related (fix one might fix others)
+- Need to understand full system state
+- Agents would interfere with each other
 
-The primary agent owns shared files, integration decisions, final verification, and commits unless active instructions explicitly say otherwise.
+## The Pattern
 
-## Dispatch
+### 1. Identify Independent Domains
 
-- Dispatch independent agents concurrently when slots and tooling allow.
-- Give agents only task-local context; do not pass the whole conversation or leading conclusions.
-- Use read-only agents for overlapping investigation when independence of judgment matters.
-- Keep useful primary-agent work moving while delegates run.
-- Do not spawn replacement agents merely to keep slots full after meaningful parallel work is exhausted.
+Group failures by what's broken:
+- File A tests: Tool approval flow
+- File B tests: Batch completion behavior
+- File C tests: Abort functionality
 
-## Integrate
+Each domain is independent - fixing tool approval doesn't affect abort tests.
 
-After results return:
+### 2. Create Focused Agent Tasks
 
-1. Inspect evidence and actual diffs.
-2. Reconcile interface or assumption conflicts centrally.
-3. Serialize any shared-state mutation.
-4. Run focused checks for each deliverable, then one integrated verification pass when required.
-5. Report duplicated work, unresolved coupling, or gaps rather than hiding them behind parallel completion.
+Each agent gets:
+- **Specific scope:** One test file, subsystem, or distinct deliverable, with exclusive mutable ownership when editing
+- **Clear goal:** Make these tests pass
+- **Constraints:** Don't change other code
+- **Expected output:** Summary of what you found and fixed
 
-## Stop conditions
+### 3. Dispatch in Parallel
 
-Collapse work back to the primary agent when delegates converge on the same root cause, need the same mutable paths, depend on an unsettled central decision, or cost more coordination than they save.
+Issue all three subagent dispatches in the same response — they run in parallel:
 
-Parallel dispatch is a scheduling technique, not a requirement to use every available agent.
+```text
+Subagent (general-purpose): "Fix agent-tool-abort.test.ts failures"
+Subagent (general-purpose): "Fix batch-completion-behavior.test.ts failures"
+Subagent (general-purpose): "Fix tool-approval-race-conditions.test.ts failures"
+# All three run concurrently.
+```
+
+Multiple dispatch calls in one response = parallel execution. One per response = sequential.
+
+### 4. Review and Integrate
+
+When agents return:
+- Read each summary
+- Verify fixes don't conflict
+- Integrate all changes
+- Run one outcome-proportionate verification pass after the last relevant integration change
+
+## Agent Prompt Structure
+
+Good agent prompts are:
+1. **Focused** - One clear problem domain
+2. **Self-contained** - All context needed to understand the problem
+3. **Specific about output** - What should the agent return?
+
+```markdown
+Fix the 3 failing tests in src/agents/agent-tool-abort.test.ts:
+
+1. "should abort tool with partial output capture" - expects 'interrupted at' in message
+2. "should handle mixed completed and aborted tools" - fast tool aborted instead of completed
+3. "should properly track pendingToolCount" - expects 3 results but gets 0
+
+These are timing/race condition issues. Your task:
+
+1. Read the test file and understand what each test verifies
+2. Identify root cause - timing issues or actual bugs?
+3. Fix by:
+   - Replacing arbitrary timeouts with event-based waiting
+   - Fixing bugs in abort implementation if found
+   - Adjusting test expectations if testing changed behavior
+
+Do NOT just increase timeouts - find the real issue.
+
+Return: Summary of what you found and what you fixed.
+```
+
+## Common Mistakes
+
+**❌ Too broad:** "Fix all the tests" - agent gets lost
+**✅ Specific:** "Fix agent-tool-abort.test.ts" - focused scope
+
+**❌ No context:** "Fix the race condition" - agent doesn't know where
+**✅ Context:** Paste the error messages and test names
+
+**❌ No constraints:** Agent might refactor everything
+**✅ Constraints:** "Do NOT change production code" or "Fix tests only"
+
+**❌ Vague output:** "Fix it" - you don't know what changed
+**✅ Specific:** "Return summary of root cause and changes"
+
+## When NOT to Use
+
+**Related failures:** Fixing one might fix others - investigate together first
+**Need full context:** Understanding requires seeing entire system
+**Exploratory debugging:** You don't know what's broken yet
+**Shared state:** Agents would interfere (editing same files, using same resources)
+
+## Real Example from Session
+
+**Scenario:** 6 test failures across 3 files after major refactoring
+
+**Failures:**
+- agent-tool-abort.test.ts: 3 failures (timing issues)
+- batch-completion-behavior.test.ts: 2 failures (tools not executing)
+- tool-approval-race-conditions.test.ts: 1 failure (execution count = 0)
+
+**Decision:** Independent domains - abort logic separate from batch completion separate from race conditions
+
+**Dispatch:**
+```
+Agent 1 → Fix agent-tool-abort.test.ts
+Agent 2 → Fix batch-completion-behavior.test.ts
+Agent 3 → Fix tool-approval-race-conditions.test.ts
+```
+
+**Results:**
+- Agent 1: Replaced timeouts with event-based waiting
+- Agent 2: Fixed event structure bug (threadId in wrong place)
+- Agent 3: Added wait for async tool execution to complete
+
+**Integration:** All fixes independent, no conflicts, full suite green
+
+## Verification
+
+After agents return:
+1. **Review each summary** - Understand what changed
+2. **Check for conflicts** - Did agents edit the same code or invalidate shared assumptions?
+3. **Verify the integrated outcome** - Run the focused or full checks required by the claim's scope
+4. **Spot check** - Agents can make systematic errors

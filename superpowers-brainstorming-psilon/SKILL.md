@@ -1,87 +1,149 @@
 ---
 name: superpowers-brainstorming-psilon
-description: Use when a non-trivial requested change has unresolved product intent or success criteria that would materially alter architecture, interfaces, persistent state, multi-component behavior, or long-term maintenance, or when coupled subsystems need decomposition before implementation. Clarify consequential uncertainty, compare materially different approaches, and recommend a proportionate design. Do not use for a clear local change, a single small decision, routine configuration, mechanical edits, or when the user has already supplied an adequate design.
+description: Use when a non-trivial requested change has unresolved product intent or success criteria that would materially alter architecture, interfaces, persistent state, multi-component behavior, or long-term maintenance, or when coupled subsystems need decomposition before implementation. Use before writing a plan when those consequential design choices remain unresolved. Clarify consequential uncertainty, compare materially different approaches, and recommend a proportionate design. Do not use for a clear local change, a single small decision, routine configuration, mechanical edits, or when the user has already supplied an adequate design.
 ---
 
 # Brainstorming Ideas Into Designs
 
-> Forked from `superpowers:brainstorming` v6.2.0. Local changes: narrow activation, proportional exploration, and removal of mandatory specs, approval loops, visual tooling, and `writing-plans` chaining.
+> **Codex 5.6 adaptation:** The frontmatter description is the scope gate. Apply this upstream method only after that gate matches; resolve ordinary engineering choices autonomously and scale artifacts and checkpoints to the uncertainty, risk, and handoff need.
 
-## Goal
+Help turn ideas into fully formed designs and specs through natural collaborative dialogue.
 
-Turn an ambiguous idea into the smallest coherent design needed for confident implementation. Preserve natural collaborative dialogue without turning design exploration into a mandatory prelude for every change.
+Start by understanding the current project context, then resolve the consequential questions needed to refine the idea. Once you understand what you are building, present a proportionate design.
 
-## Boundaries
+<HARD-GATE>
+Do NOT invoke an implementation skill, write code, scaffold, or take implementation action until a coherent design is established and consequential product or authority decisions are resolved. Governing user and repository instructions determine when approval is required; do not invent approval gates for ordinary reversible engineering choices.
+</HARD-GATE>
 
-- Stop using this skill when the request and governing contracts already determine the behavior and no material design choice remains.
-- Do not create task lists, specifications, plan documents, commits, visual companions, review loops, or approval gates merely because this skill activated.
-- Do not invoke another process skill as a mandatory next step.
-- Ask the user only when a missing choice would materially change behavior, scope, authority, cost, or risk and cannot be resolved from available evidence.
-- When a reversible assumption is sufficient, state it briefly and continue.
+## Anti-Pattern: "This Is Too Simple To Need A Design"
 
-## Process
+Every task that substantively matches the trigger goes through this process. Do not evade design work by relabeling a genuinely ambiguous or high-impact change as simple. Clear local changes do not match this skill and should proceed directly with bounded inspection and focused verification.
 
-### 1. Understand the context
+## Checklist
 
-- Inspect the current project structure, relevant documentation, governing contracts, and recent related changes.
-- Keep reconnaissance bounded to evidence that can affect the design.
-- Separate explicit requirements from incidental current behavior and implementation detail.
+Create a task for each applicable item and complete them in order:
 
-### 2. Assess scope
+1. **Explore project context** — check files, docs, recent commits
+2. **Offer the visual companion just-in-time** — NOT upfront. The first time a question would genuinely be clearer shown than described, offer it then (its own message); on approval its browser tab opens for you. If no visual question ever arises, never offer it. See the Visual Companion section below.
+3. **Resolve consequential uncertainty** — investigate first; ask one question at a time only when missing intent or authority would materially change the result
+4. **Compare approaches** — propose 2-3 materially different viable approaches with trade-offs and a recommendation; if only one is credible, explain why
+5. **Present design** — in sections scaled to their complexity; request decisions only where the user owns a consequential choice
+6. **Write a design doc when durable handoff value justifies it** — use the governing location and commit policy; otherwise keep the design in the current task
+7. **Design/spec self-review** — quick inline check for placeholders, contradictions, ambiguity, scope (see below)
+8. **Obtain external review only when required** — for an explicit product decision, approval boundary, or requested checkpoint
+9. **Transition proportionately** — invoke the psilon writing-plans skill only if its trigger matches; otherwise implement directly
 
-- Identify the user-visible outcome, constraints, success criteria, and external boundaries.
-- If the request contains multiple independently valuable subsystems, explain the decomposition and recommend an implementation order.
-- Do not split a cohesive change merely to create more phases or artifacts.
+## Process Flow
 
-### 3. Resolve consequential uncertainty
+```dot
+digraph brainstorming {
+    "Explore project context" [shape=box];
+    "Ask clarifying questions" [shape=box];
+    "Propose 2-3 approaches" [shape=box];
+    "Present design sections" [shape=box];
+    "Consequential decisions resolved?" [shape=diamond];
+    "Persist design if justified" [shape=box];
+    "Spec self-review\n(fix inline)" [shape=box];
+    "External review required?" [shape=diamond];
+    "Plan or implement proportionately" [shape=doublecircle];
 
-- Identify decisions whose answers materially alter the solution.
-- Resolve them from the repository, deployed state, authoritative contracts, or reasonable reversible assumptions when possible.
-- If user input is genuinely required, ask one focused question at a time and explain the consequence of the choice.
-- Do not ask the user to choose implementation details the agent can determine responsibly.
+    "Explore project context" -> "Ask clarifying questions";
+    "Ask clarifying questions" -> "Propose 2-3 approaches";
+    "Propose 2-3 approaches" -> "Present design sections";
+    "Present design sections" -> "Consequential decisions resolved?";
+    "Consequential decisions resolved?" -> "Present design sections" [label="no, revise or ask"];
+    "Consequential decisions resolved?" -> "Persist design if justified" [label="yes or no external decision"];
+    "Persist design if justified" -> "Spec self-review\n(fix inline)";
+    "Spec self-review\n(fix inline)" -> "External review required?";
+    "External review required?" -> "Persist design if justified" [label="changes requested"];
+    "External review required?" -> "Plan or implement proportionately" [label="no or approved"];
+}
+```
 
-### 4. Explore approaches
+**The terminal state is a resolved design.** Invoke `superpowers-writing-plans-psilon` next only when its durable-plan trigger matches. Otherwise proceed with direct implementation or the applicable domain skill.
 
-- Propose two or three approaches only when they are materially different and the comparison would change the decision.
-- Lead with the recommended approach and explain why it best fits the requirements, existing system, cumulative maintenance cost, and risk.
-- State important tradeoffs and rejected alternatives concisely.
-- Apply YAGNI: remove behavior and machinery not required by the supported outcome.
+## The Process
 
-### 5. Present a proportionate design
+**Understanding the idea:**
 
-Scale the design to the actual uncertainty:
+- Check out the current project state first (files, docs, recent commits)
+- Before asking detailed questions, assess scope: if the request describes multiple independent subsystems (e.g., "build a platform with chat, file storage, billing, and analytics"), flag this immediately. Don't spend questions refining details of a project that needs to be decomposed first.
+- If the project is too large for a single spec, help the user decompose into sub-projects: what are the independent pieces, how do they relate, what order should they be built? Then brainstorm the first sub-project through the normal design flow. Each sub-project gets its own spec → plan → implementation cycle.
+- For appropriately scoped projects, investigate and infer ordinary engineering details before asking
+- Ask only when consequential intent, authority, or an external contract cannot be resolved from available evidence
+- When a question is needed, ask one at a time; prefer concise choices when they genuinely clarify the decision
+- Focus on understanding: purpose, constraints, success criteria
 
-- For a small but ambiguous change, use a few sentences covering the decision and affected boundary.
-- For a multi-component or high-risk change, cover architecture, ownership, interfaces, data flow, failure handling, migration or rollout, and verification where applicable.
-- Avoid repeating settled requirements or narrating obvious implementation steps.
+**Exploring approaches:**
 
-Ask for approval only when the proposed design introduces a material product choice, new authority, irreversible consequence, or scope expansion not already authorized. Otherwise, continue with the requested implementation once the design is sufficiently clear.
+- Propose 2-3 materially different viable approaches with trade-offs; if only one is credible, state why
+- Present options conversationally with your recommendation and reasoning
+- Lead with your recommended option and explain why
+- YAGNI ruthlessly - remove unnecessary features from every approach and design
 
-## Design Quality
+**Presenting the design:**
 
-### Isolation and clarity
+- Once you believe you understand what you're building, present the design
+- Scale each section to its complexity: a few sentences if straightforward, up to 200-300 words if nuanced
+- Ask after a section only when it contains a consequential user-owned choice; otherwise self-check and continue
+- Cover: architecture, components, data flow, error handling, testing
+- Be ready to go back and clarify if something doesn't make sense
 
-- Give each unit one clear responsibility and define how consumers use it and what it depends on.
-- Prefer interfaces that allow internals to change without breaking consumers.
-- Use existing abstractions where they fit; add a new boundary only when it closes a real contract gap.
+**Design for isolation and clarity:**
 
-### Existing codebases
+- Break the system into smaller units that each have one clear purpose, communicate through well-defined interfaces, and can be understood and tested independently
+- For each unit, you should be able to answer: what does it do, how do you use it, and what does it depend on?
+- Can someone understand what a unit does without reading its internals? Can you change the internals without breaking consumers? If not, the boundaries need work.
+- Smaller, well-bounded units are also easier for you to work with - you reason better about code you can hold in context at once, and your edits are more reliable when files are focused. When a file grows large, that's often a signal that it's doing too much.
 
-- Follow established patterns after verifying that they serve the required behavior.
-- Include targeted improvement when an existing problem directly obstructs the requested outcome.
-- Do not authorize unrelated refactoring through the brainstorming process.
+**Working in existing codebases:**
 
-### Self-check
+- Explore the current structure before proposing changes. Follow existing patterns.
+- Where existing code has problems that affect the work (e.g., a file that's grown too large, unclear boundaries, tangled responsibilities), include targeted improvements as part of the design - the way a good developer improves code they're working in.
+- Don't propose unrelated refactoring. Stay focused on what serves the current goal.
 
-Before leaving the design, check briefly:
+## After the Design
 
-1. Are any requirements, assumptions, or boundaries materially ambiguous?
-2. Does the recommended approach satisfy the stated outcome without extra behavior?
-3. Are ownership and interfaces coherent at the affected boundaries?
-4. Is the scope small enough to implement and verify as one cohesive change?
+**Documentation:**
 
-Fix issues inline. Do not create a separate review cycle unless the design's risk independently warrants one.
+- Write a durable design spec only when complexity, cross-session handoff, an approval boundary, or repository policy gives it continuing value
+- Use the user- or repository-selected location; absent one, `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md` remains the upstream default
+- Use elements-of-style:writing-clearly-and-concisely skill if available
+- Commit the design document only when the task and governing git policy authorize that commit
 
-## Exit
+**Spec Self-Review:**
+After establishing the design, and after writing the spec when one is justified, look at it with fresh eyes:
 
-The terminal state is a sufficiently clear, proportionate design. If the user requested implementation and no new authority is needed, proceed directly. If a material user decision or approval is required, present that exact decision and wait.
+1. **Placeholder scan:** Any "TBD", "TODO", incomplete sections, or vague requirements? Fix them.
+2. **Internal consistency:** Do any sections contradict each other? Does the architecture match the feature descriptions?
+3. **Scope check:** Is this focused enough for a single implementation plan, or does it need decomposition?
+4. **Ambiguity check:** Could any requirement be interpreted two different ways? If so, pick one and make it explicit.
+
+Fix any issues inline. No need to re-review — just fix and move on.
+
+**External Review Gate:**
+After self-review, request user review only when the spec freezes a consequential product decision, crosses an approval boundary, or the user requested a checkpoint. Otherwise proceed autonomously. If review is required and changes are requested, revise the spec and re-run the self-review.
+
+**Implementation:**
+
+- Invoke `superpowers-writing-plans-psilon` only when its trigger conditions match
+- Otherwise proceed directly with the relevant implementation workflow
+
+## Visual Companion
+
+A browser-based companion for showing mockups, diagrams, and visual options during brainstorming. Available as a tool — not a mode. Accepting the companion means it's available for questions that benefit from visual treatment; it does NOT mean every question goes through the browser.
+
+**Offering the companion (just-in-time):** Do NOT offer it upfront. Wait until a question would genuinely be clearer shown than told — a real mockup / layout / diagram question, not merely a UI *topic*. The first time that happens, offer it then, as its own message:
+> "This next part might be easier if I show you — I can put together mockups, diagrams, and comparisons in a browser tab as we go. It's still new and can be token-intensive. Want me to? I'll open it for you."
+
+**This offer MUST be its own message.** Only the offer — no clarifying question, summary, or other content. Wait for the user's response. If they accept, start the server with `--open` so their browser opens to the first screen automatically. If they decline, continue text-only and don't offer again unless they raise it.
+
+**Per-question decision:** Even after the user accepts, decide FOR EACH QUESTION whether to use the browser or the terminal. The test: **would the user understand this better by seeing it than reading it?**
+
+- **Use the browser** for content that IS visual — mockups, wireframes, layout comparisons, architecture diagrams, side-by-side visual designs
+- **Use the terminal** for content that is text — requirements questions, conceptual choices, tradeoff lists, A/B/C/D text options, scope decisions
+
+A question about a UI topic is not automatically a visual question. "What does personality mean in this context?" is a conceptual question — use the terminal. "Which wizard layout works better?" is a visual question — use the browser.
+
+If they agree to the companion, read the detailed guide before proceeding:
+`visual-companion.md`
