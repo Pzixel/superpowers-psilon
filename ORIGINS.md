@@ -90,6 +90,12 @@ would otherwise broaden the frontmatter trigger. Writing-plans additionally
 uses a measured harmful trace to restructure detail admission and plan form
 while preserving durable handoff, sequencing, validation, and recovery.
 
+On 2026-08-10, the eight bodies were compressed for lower context cost. The
+edit removed repeated flowcharts, examples, warnings, and restatements; it did
+not remove trigger boundaries, hard gates, authority rules, recovery paths,
+force, exceptions, or review ordering. The validation record below gives the
+measured reduction and independent checks.
+
 ## Clause-level deviations
 
 ### `superpowers-brainstorming-psilon`
@@ -291,6 +297,23 @@ These upstream skills remain disabled because their literal verdict was
 - `writing-skills`
 
 ## Validation record
+
+### 2026-08-10 semantic compression
+
+Against commit `5501303`, the eight `SKILL.md` files changed from 14,420 to
+6,464 words and from 1,872 to 706 lines. Frontmatter descriptions are one
+physical YAML line, at most 450 characters and 60 words. Each body is at most
+250 lines and 2,500 words; repository validation enforces these limits.
+
+- An independent semantic diff found and drove restoration of compressed
+  trigger qualifiers, force words, exceptions, recovery loops, and review
+  order. Its final pass approved all eight skills with no semantic blocker.
+- An independent description-only forward test kept the intended result for
+  ten easy, hard, review, delegation, debugging, and completion cases. Its
+  final pass approved every trigger boundary and metadata budget.
+- The skill-creator validator and the repository validator passed all eight
+  skills. Python syntax, shell syntax, local links, YAML, and
+  `git diff --check` also passed.
 
 ### 2026-08-10 applicability revision
 

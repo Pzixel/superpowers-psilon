@@ -1,125 +1,63 @@
 ---
 name: superpowers-verification-before-completion-psilon
-description: Use before claiming completion when work affects production, security, data integrity, concurrency, migrations, external contracts, releases, or broad multi-component behavior, or when the user explicitly requests rigorous verification. Collect fresh outcome-specific evidence after the last relevant change and verify that it covers the exact target scope and load-bearing prerequisites of the claim. Do not use for clear low-risk local edits; perform ordinary focused verification instead.
+description: Use before claiming completion when work affects production, security, data integrity, concurrency, migrations, external contracts, releases, or broad multi-component behavior, or when the user requests rigorous completion proof. Skip clear low-risk local edits. After the last relevant change, prove the exact outcome, target, and prerequisites with fresh evidence.
 ---
 
 # Verification Before Completion
 
-> **Codex 5.6 adaptation:** The frontmatter description is the scope gate. Match the breadth of fresh evidence to the completion claim after the last relevant change; do not turn this high-risk gate into repeated full-suite ceremony for low-risk or unchanged work.
+> **Codex 5.6 adaptation:** The description is the scope gate. Match fresh evidence to the claim; do not turn this high-risk gate into repeated full-suite ceremony for low-risk or unchanged work.
 
-## Overview
+**Core principle:** Evidence before claims, always. Violating the letter violates the spirit.
 
-**Core principle:** Evidence before claims, always.
+## Iron Law
 
-**Violating the letter of this rule is violating the spirit of this rule.**
-
-## The Iron Law
-
-```
+```text
 NO COMPLETION CLAIMS WITHOUT FRESH VERIFICATION EVIDENCE
 ```
 
-If you have not gathered fresh evidence after the last relevant change, you cannot claim the affected outcome passes.
+No fresh evidence after the last relevant change means no affected success claim.
 
-## The Gate Function
+## Gate
 
-```
-BEFORE claiming any status or expressing satisfaction:
+Before any success, satisfaction, commit, push, PR, release, or production-completion claim within the trigger scope:
 
-1. DEFINE: State the exact claim and target scope
-2. IDENTIFY: Name every load-bearing prerequisite, the command or observation that can prove it at that scope, and where disconfirming or limiting evidence may exist
-3. RUN: Execute the command or observation set sufficient for the claim's scope (fresh, complete for that scope)
-4. READ: Relevant full output, check exit code, count failures, and inspect outcome evidence
-5. VERIFY: Does the evidence cover the exact target, survive the disconfirming-evidence search, and confirm the claim and its prerequisites?
-   - If NO or a prerequisite is false: State actual status with evidence
-   - If YES: State claim WITH evidence
-6. ONLY THEN: Make the claim
+1. **DEFINE** the exact claim and target.
+2. **IDENTIFY** each load-bearing prerequisite, matching proof, and likely disconfirming or limiting evidence.
+3. **RUN** the complete command or observation set needed for that claim scope.
+4. **READ** relevant full output, exit status, failure counts, and outcome evidence.
+5. **VERIFY** exact-target coverage, prerequisites, and disconfirming evidence.
+   - False or unproved: report actual status and evidence.
+   - Proved: state the claim with evidence.
+6. **ONLY THEN** claim success.
 
-Skip any step = lying, not verifying
-```
+Skip a step = lying, not verifying.
 
-## Common Failures
+## Proof Boundaries
 
-| Claim | Requires | Not Sufficient |
-|-------|----------|----------------|
-| Tests pass | The test scope named in the claim reports 0 failures | Previous run, "should pass" |
-| Linter clean | Linter output: 0 errors | Partial check, extrapolation |
-| Build succeeds | Build command: exit 0 | Linter passing, logs look good |
-| Bug fixed | Original symptom passes at the required target boundary and applicable prerequisites are verified | Code changed, a similar fixture passes |
-| Regression test works | Red-green cycle verified | Test passes once |
-| Agent completed | VCS diff shows changes | Agent reports "success" |
-| Requirements met | Authoritative requirement-by-requirement evidence at matching target boundaries | Tests passing, plan checklist alone |
+| Claim | Required proof | Not enough |
+|---|---|---|
+| Tests pass | Named test scope reports zero failures | Old run; “should pass” |
+| Lint/build passes | Exact command exits zero | Partial check; another gate |
+| Bug fixed | Original symptom passes at the required target; prerequisites hold | Code changed; similar fixture |
+| Regression test works | Admitted test distinguishes broken and fixed behavior | One passing run |
+| Agent completed | Inspect diff and verify outcome | Agent report |
+| Requirements met | Each authoritative requirement has matching target-boundary evidence | Tests or plan checklist alone |
 
-## Red Flags - STOP
+A mechanism-level pass proves only that exercised scope. It does not prove another target has the needed data, configuration, coverage, or deployment state. Plans, prior examples, and agent reports are evidence indexes, not proof.
 
-- Using "should", "probably", "seems to"
-- Expressing satisfaction before verification ("Great!", "Perfect!", "Done!", etc.)
-- About to commit/push/PR without verification
-- Trusting agent success reports
-- Extrapolating beyond the scope actually verified
-- Thinking "just this once"
-- Tired and wanting work over
-- **ANY wording implying success without having run verification**
+For a qualifying permanent regression test, capture failure before the fix and pass after it. If failure was not captured, use a safe revert or mutation only when proportionate and safe for user work.
 
-## Rationalization Prevention
+## Stop Signals
 
-| Excuse | Reality |
-|--------|---------|
-| "Should work now" | RUN the verification |
-| "I'm confident" | Confidence ≠ evidence |
-| "Just this once" | No exceptions |
-| "Linter passed" | Linter ≠ compiler |
-| "Agent said success" | Verify independently |
-| "I'm tired" | Exhaustion ≠ excuse |
-| "This narrow check proves the whole system" | Evidence supports only the boundary and scope it exercised |
-| "Different words so rule doesn't apply" | Spirit over letter |
+Stop before claiming success if you are:
 
-## Key Patterns
+- saying “should,” “probably,” “seems,” “great,” “perfect,” or “done” without proof;
+- trusting confidence, a prior run, an agent, or a narrow check;
+- tired, rushing, or thinking “just once”;
+- extrapolating beyond the verified boundary.
 
-**Tests:**
-```
-✅ [Run test command] [See: 34/34 pass] "All tests pass"
-❌ "Should pass now" / "Looks correct"
-```
+Different wording does not evade the rule. Confidence is not evidence; lint is not build; exhaustion is not an exception.
 
-**Regression tests when a permanent test qualifies:**
-```
-✅ Observe failure before the fix → apply fix → run the admitted regression test (pass)
-✅ If the initial failure was not captured, use a safe revert or mutation check only when it is proportionate and does not risk user work
-❌ "I've written a regression test" without evidence that it distinguishes the broken behavior
-```
+## Scope
 
-**Build:**
-```
-✅ [Run build] [See: exit 0] "Build passes"
-❌ "Linter passed" (linter doesn't check compilation)
-```
-
-**Requirements:**
-```
-✅ Re-read authoritative requirements and target scope → Create checklist → Verify each at its matching boundary → Report gaps or completion
-❌ "Tests pass, phase complete"
-```
-
-**Agent delegation:**
-```
-✅ Agent reports success → Check VCS diff → Verify changes → Report actual state
-❌ Trust agent report
-```
-
-## When To Apply
-
-Apply this skill when its frontmatter trigger matches, before:
-- A high-risk success or completion claim
-- Commit, push, pull-request, release, or production-completion claims within that risk scope
-- Declaring a broad multi-component requirement satisfied
-
-For clear low-risk local edits, run ordinary focused verification instead. Do not re-run unchanged gates before moving between internal steps or before delegation unless new evidence or a named risk requires it.
-
-The evidence rule applies to exact claims, paraphrases, and implications of correctness within the verified scope.
-
-A passing mechanism-level check proves that the mechanism can work in the
-exercised scope. It does not prove that required data, configuration, coverage,
-or deployment state exists in another target. Treat plans, agent reports, and
-prior successful examples as evidence indexes, not proof of current
-applicability.
+Apply before high-risk or broad completion claims and matching commit, push, PR, release, or production claims. For clear low-risk local edits, run focused verification. Do not repeat unchanged gates between internal steps or before delegation without a relevant change or named new risk.
