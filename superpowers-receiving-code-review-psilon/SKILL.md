@@ -9,7 +9,7 @@ description: Use when the user or an external reviewer supplies concrete code-re
 
 Code review requires technical evaluation, not emotional performance.
 
-**Core principle:** Verify before implementing. Ask before assuming. Technical correctness over social comfort.
+**Core principle:** Verify before implementing. Investigate before assuming. Technical correctness over social comfort.
 
 ## The Response Pattern
 
@@ -17,11 +17,11 @@ Code review requires technical evaluation, not emotional performance.
 WHEN receiving code review feedback:
 
 1. READ: Complete feedback without reacting
-2. UNDERSTAND: Restate requirement in own words (or ask)
-3. VERIFY: Check against codebase reality
-4. EVALUATE: Technically sound for THIS codebase?
+2. UNDERSTAND: Separate the requested outcome from the reviewer's diagnosis or proposed mechanism
+3. VERIFY: Check every technical claim and load-bearing prerequisite against current evidence for the exact target scope
+4. EVALUATE: Technically sound and applicable for THIS codebase and target?
 5. RESPOND: Technical acknowledgment or reasoned pushback
-6. IMPLEMENT: One item at a time, test each
+6. IMPLEMENT: One item at a time, verify each at the smallest relevant boundary
 ```
 
 ## Forbidden Responses
@@ -33,7 +33,7 @@ WHEN receiving code review feedback:
 
 **INSTEAD:**
 - Restate the technical requirement
-- Ask clarifying questions
+- Ask only for consequential intent, authority, or external evidence that remains unresolved after investigation
 - Push back with technical reasoning if wrong
 - Just start working (actions > words)
 
@@ -41,10 +41,13 @@ WHEN receiving code review feedback:
 
 ```
 IF any item is unclear:
-  STOP - do not implement anything yet
-  ASK for clarification on unclear items
+  Do not implement that item or anything that depends on it
+  Investigate available code, requirements, and target evidence first
+  Ask only if consequential intent, authority, or unavailable external evidence remains unresolved
+  Continue verified independent items only when they cannot constrain the unclear decision
 
-WHY: Items may be related. Partial understanding = wrong implementation.
+WHY: Partial understanding is unsafe when items are coupled, but an unrelated
+clear correction need not wait for a separate unresolved item.
 ```
 
 **Example:**
@@ -52,15 +55,18 @@ WHY: Items may be related. Partial understanding = wrong implementation.
 your human partner: "Fix 1-6"
 You understand 1,2,3,6. Unclear on 4,5.
 
-❌ WRONG: Implement 1,2,3,6 now, ask about 4,5 later
-✅ RIGHT: "I understand items 1,2,3,6. Need clarification on 4 and 5 before proceeding."
+If 1-6 share one interface or decision, resolve 4 and 5 before changing any of
+them. If 1,2,3,6 are independently verifiable and cannot constrain 4 or 5,
+implement those clear items and report the remaining evidence or decision gap.
 ```
 
 ## Source-Specific Handling
 
 ### From your human partner
-- **Trusted** - implement after understanding
-- **Still ask** if scope unclear
+- **Requirements and authority decisions bind** within the partner's scope
+- **Diagnoses, factual claims, and proposed mechanisms still require verification** for the exact target; a supported mechanism does not prove it applies here
+- Implement after both the requested outcome and the technical basis are established
+- Investigate available evidence first; ask if consequential scope remains unclear
 - **No performative agreement**
 - **Skip to action** or technical acknowledgment
 
@@ -68,16 +74,20 @@ You understand 1,2,3,6. Unclear on 4,5.
 ```
 BEFORE implementing:
   1. Check: Technically correct for THIS codebase?
-  2. Check: Breaks existing functionality?
-  3. Check: Reason for current implementation?
-  4. Check: Works on all platforms/versions?
-  5. Check: Does reviewer understand full context?
+  2. Check: Are its load-bearing prerequisites true for the exact target scope?
+  3. Check: Is there current evidence that disproves the claim or limits its coverage?
+  4. Check: Breaks existing functionality?
+  5. Check: Reason for current implementation?
+  6. Check: Works on all required platforms/versions?
+  7. Check: Does reviewer understand full context?
 
 IF suggestion seems wrong:
   Push back with technical reasoning
 
 IF can't easily verify:
-  Say so: "I can't verify this without [X]. Should I [investigate/ask/proceed]?"
+  Do not implement a load-bearing claim as though it were true. Investigate
+  when the evidence is available in scope; ask only when missing intent,
+  authority, or external evidence requires the human partner.
 
 IF conflicts with your human partner's prior decisions:
   Stop and discuss with your human partner first
@@ -101,13 +111,13 @@ IF reviewer suggests "implementing properly":
 
 ```
 FOR multi-item feedback:
-  1. Clarify anything unclear FIRST
+  1. Resolve unclear items before their dependents; do not block independent verified items
   2. Then implement in this order:
      - Blocking issues (breaks, security)
      - Simple fixes (typos, imports)
      - Complex fixes (refactoring, logic)
-  3. Test each fix individually
-  4. Verify no regressions
+  3. Verify each fix at its smallest relevant boundary
+  4. Run one outcome-proportionate regression pass after the last relevant change
 ```
 
 ## When To Push Back
@@ -167,11 +177,11 @@ State the correction factually and move on.
 |---------|-----|
 | Performative agreement | State requirement or just act |
 | Blind implementation | Verify against codebase first |
-| Batch without testing | One at a time, test each |
+| Batch without verification | One at a time, verify each at the relevant boundary |
 | Assuming reviewer is right | Check if breaks things |
 | Avoiding pushback | Technical correctness > comfort |
-| Partial implementation | Clarify all items first |
-| Can't verify, proceed anyway | State limitation, ask for direction |
+| Coupled unclear items | Resolve them before their dependents; continue only verified independent items |
+| Can't verify a load-bearing claim, proceed anyway | Investigate or report the evidence gap; do not treat it as true |
 
 ## Real Examples
 
@@ -197,7 +207,10 @@ Reviewer: "Implement proper metrics tracking with database, date filters, CSV ex
 ```
 your human partner: "Fix items 1-6"
 You understand 1,2,3,6. Unclear on 4,5.
-✅ "Understand 1,2,3,6. Need clarification on 4 and 5 before implementing."
+✅ "I checked the current code and requirements. Items 4 and 5 both change the
+shared response contract, but the intended format is not specified. I need that
+contract decision before changing 4 or 5. Items 1,2,3,6 are independent and can
+proceed."
 ```
 
 ## GitHub Thread Replies

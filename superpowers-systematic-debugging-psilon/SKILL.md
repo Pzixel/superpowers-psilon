@@ -143,6 +143,12 @@ You MUST complete each phase before proceeding to the next.
    - What settings, config, environment?
    - What assumptions does it make?
 
+5. **Verify Target Applicability**
+   - For every working example or reference pattern, identify its load-bearing prerequisites
+   - Verify them against current authoritative evidence for the exact failing target, environment, and data scope
+   - Search for evidence that the target lacks a required dependency, configuration, state, coverage, or contract
+   - Treat a working example as proof of capability only; if applicability remains unknown, keep the pattern as a conditional hypothesis rather than a proposed fix
+
 ### Phase 3: Hypothesis and Testing
 
 **Scientific method:**
@@ -151,6 +157,7 @@ You MUST complete each phase before proceeding to the next.
    - State clearly: "I think X is the root cause because Y"
    - Write it down
    - Be specific, not vague
+   - Name the exact target scope and the verified prerequisites that make the hypothesis applicable there
 
 2. **Test Minimally**
    - Make the SMALLEST possible change to test hypothesis
@@ -165,8 +172,8 @@ You MUST complete each phase before proceeding to the next.
 4. **When You Don't Know**
    - Say "I don't understand X"
    - Don't pretend to know
-   - Ask for help
-   - Research more
+   - Investigate the exact unknown further
+   - Ask only when consequential intent, authority, or unavailable external evidence blocks progress
 
 ### Phase 4: Implementation
 
@@ -185,8 +192,8 @@ You MUST complete each phase before proceeding to the next.
    - No bundled refactoring
 
 3. **Verify Fix**
-   - Test passes now?
-   - No other tests broken?
+   - Does the failing reproduction pass now?
+   - Do admitted related checks remain green?
    - Issue actually resolved?
    - Use `superpowers-verification-before-completion-psilon` when its high-risk trigger matches; otherwise run ordinary focused verification
 
@@ -194,10 +201,10 @@ You MUST complete each phase before proceeding to the next.
    - STOP
    - Count: How many fixes have you tried?
    - If < 3: Return to Phase 1, re-analyze with new information
-   - **If ≥ 3: STOP and question the architecture (step 5 below)**
-   - DON'T attempt Fix #4 without architectural discussion
+   - **If ≥ 3: STOP and reassess the architecture and shared assumptions (step 5 below)**
+   - DON'T attempt Fix #4 before that evidence review
 
-5. **If 3+ Fixes Failed: Question Architecture**
+5. **If 3+ Fixes Failed: Reassess Architecture**
 
    **Pattern indicating architectural problem:**
    - Each fix reveals new shared state/coupling/problem in different place
@@ -211,7 +218,9 @@ You MUST complete each phase before proceeding to the next.
 
    Resolve the architecture from authoritative requirements and evidence when possible; ask the human partner only if a consequential product or authority choice remains.
 
-   This is NOT a failed hypothesis - this is a wrong architecture.
+   Three failed fixes are evidence that the current model or architecture may
+   be wrong, not proof of a specific redesign. Return to requirements and
+   boundary evidence before selecting another mechanism.
 
 ## Red Flags - STOP and Follow Process
 
@@ -230,7 +239,7 @@ If you catch yourself thinking:
 
 **ALL of these mean: STOP. Return to Phase 1.**
 
-**If 3+ fixes failed:** Question the architecture (see Phase 4.5)
+**If 3+ fixes failed:** Reassess the architecture and shared assumptions (see Phase 4.5)
 
 ## your human partner's Signals You're Doing It Wrong
 
@@ -254,7 +263,7 @@ If you catch yourself thinking:
 | "Multiple fixes at once saves time" | Can't isolate what worked. Causes new bugs. |
 | "Reference too long, I'll adapt the pattern" | Partial understanding guarantees bugs. Read it completely. |
 | "I see the problem, let me fix it" | Seeing symptoms ≠ understanding root cause. |
-| "One more fix attempt" (after 2+ failures) | 3+ failures = architectural problem. Question pattern, don't fix again. |
+| "One more fix attempt" (after 2+ failures) | 3+ failures require an architecture and assumption review before another fix. |
 
 ## Quick Reference
 
@@ -263,23 +272,26 @@ If you catch yourself thinking:
 | **1. Root Cause** | Read errors, reproduce, check changes, gather evidence | Understand WHAT and WHY |
 | **2. Pattern** | Find working examples, compare | Identify differences |
 | **3. Hypothesis** | Form theory, test minimally | Confirmed or new hypothesis |
-| **4. Implementation** | Create test, fix, verify | Bug resolved, tests pass |
+| **4. Implementation** | Reproduce, fix, verify | Required behavior restored; admitted checks pass |
 
 ## When Process Reveals "No Root Cause"
 
-If systematic investigation reveals issue is truly environmental, timing-dependent, or external:
+If boundary evidence excludes supported repository-owned causes and shows that
+the issue is environmental, timing-dependent, or external:
 
 1. You've completed the process
 2. Document what you investigated
-3. Implement appropriate handling (retry, timeout, error message)
-4. Add monitoring/logging for future investigation
+3. Verify that the required behavior and governing authority permit the proposed handling
+4. Implement the smallest applicable handling (for example, a retry, timeout, or accurate error) only when its prerequisites hold for the target
+5. Add monitoring or logging only when it will distinguish the remaining failure modes and governing authority permits it
 
-**But:** 95% of "no root cause" cases are incomplete investigation.
+Do not label a cause external merely because internal investigation has not yet
+found it. An unknown cause remains unknown.
 
 ## Supporting Techniques
 
 These techniques are part of systematic debugging and available in this directory:
 
 - **`root-cause-tracing.md`** - Trace bugs backward through call stack to find original trigger
-- **`defense-in-depth.md`** - Add validation at multiple layers after finding root cause
+- **`defense-in-depth.md`** - Add safeguards only at evidenced independent boundaries after finding root cause
 - **`condition-based-waiting.md`** - Replace arbitrary timeouts with condition polling

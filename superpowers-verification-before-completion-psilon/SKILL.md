@@ -1,6 +1,6 @@
 ---
 name: superpowers-verification-before-completion-psilon
-description: Use before claiming completion when work affects production, security, data integrity, concurrency, migrations, external contracts, releases, or broad multi-component behavior, or when the user explicitly requests rigorous verification. Collect fresh outcome-specific evidence after the last relevant change. Do not use for clear low-risk local edits; perform ordinary focused verification instead.
+description: Use before claiming completion when work affects production, security, data integrity, concurrency, migrations, external contracts, releases, or broad multi-component behavior, or when the user explicitly requests rigorous verification. Collect fresh outcome-specific evidence after the last relevant change and verify that it covers the exact target scope and load-bearing prerequisites of the claim. Do not use for clear low-risk local edits; perform ordinary focused verification instead.
 ---
 
 # Verification Before Completion
@@ -26,13 +26,14 @@ If you have not gathered fresh evidence after the last relevant change, you cann
 ```
 BEFORE claiming any status or expressing satisfaction:
 
-1. IDENTIFY: What command proves this claim?
-2. RUN: Execute the command or observation set sufficient for the claim's scope (fresh, complete for that scope)
-3. READ: Relevant full output, check exit code, count failures, and inspect outcome evidence
-4. VERIFY: Does output confirm the claim?
-   - If NO: State actual status with evidence
+1. DEFINE: State the exact claim and target scope
+2. IDENTIFY: Name every load-bearing prerequisite, the command or observation that can prove it at that scope, and where disconfirming or limiting evidence may exist
+3. RUN: Execute the command or observation set sufficient for the claim's scope (fresh, complete for that scope)
+4. READ: Relevant full output, check exit code, count failures, and inspect outcome evidence
+5. VERIFY: Does the evidence cover the exact target, survive the disconfirming-evidence search, and confirm the claim and its prerequisites?
+   - If NO or a prerequisite is false: State actual status with evidence
    - If YES: State claim WITH evidence
-5. ONLY THEN: Make the claim
+6. ONLY THEN: Make the claim
 
 Skip any step = lying, not verifying
 ```
@@ -44,10 +45,10 @@ Skip any step = lying, not verifying
 | Tests pass | The test scope named in the claim reports 0 failures | Previous run, "should pass" |
 | Linter clean | Linter output: 0 errors | Partial check, extrapolation |
 | Build succeeds | Build command: exit 0 | Linter passing, logs look good |
-| Bug fixed | Test original symptom: passes | Code changed, assumed fixed |
+| Bug fixed | Original symptom passes at the required target boundary and applicable prerequisites are verified | Code changed, a similar fixture passes |
 | Regression test works | Red-green cycle verified | Test passes once |
 | Agent completed | VCS diff shows changes | Agent reports "success" |
-| Requirements met | Requirement-by-requirement evidence at matching boundaries | Tests passing |
+| Requirements met | Authoritative requirement-by-requirement evidence at matching target boundaries | Tests passing, plan checklist alone |
 
 ## Red Flags - STOP
 
@@ -96,7 +97,7 @@ Skip any step = lying, not verifying
 
 **Requirements:**
 ```
-✅ Re-read plan → Create checklist → Verify each → Report gaps or completion
+✅ Re-read authoritative requirements and target scope → Create checklist → Verify each at its matching boundary → Report gaps or completion
 ❌ "Tests pass, phase complete"
 ```
 
@@ -116,3 +117,9 @@ Apply this skill when its frontmatter trigger matches, before:
 For clear low-risk local edits, run ordinary focused verification instead. Do not re-run unchanged gates before moving between internal steps or before delegation unless new evidence or a named risk requires it.
 
 The evidence rule applies to exact claims, paraphrases, and implications of correctness within the verified scope.
+
+A passing mechanism-level check proves that the mechanism can work in the
+exercised scope. It does not prove that required data, configuration, coverage,
+or deployment state exists in another target. Treat plans, agent reports, and
+prior successful examples as evidence indexes, not proof of current
+applicability.

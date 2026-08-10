@@ -1,6 +1,6 @@
 ---
 name: superpowers-brainstorming-psilon
-description: Use when a non-trivial requested change has unresolved product intent or success criteria that would materially alter architecture, interfaces, persistent state, multi-component behavior, or long-term maintenance, or when coupled subsystems need decomposition before implementation. Use before writing a plan when those consequential design choices remain unresolved. Clarify consequential uncertainty, compare materially different approaches, and recommend a proportionate design. Do not use for a clear local change, a single small decision, routine configuration, mechanical edits, or when the user has already supplied an adequate design.
+description: Use when a non-trivial requested change has unresolved product intent or success criteria that would materially alter architecture, interfaces, persistent state, multi-component behavior, or long-term maintenance, or when coupled subsystems need decomposition before implementation. Use before writing a plan when those consequential design choices remain unresolved. Clarify consequential uncertainty, verify each candidate's load-bearing prerequisites for the exact target scope, compare only admissible approaches, and recommend a proportionate design or report that no current design is admissible. Do not use for a clear local change, a single small decision, routine configuration, mechanical edits, or when the user has already supplied an adequate design.
 ---
 
 # Brainstorming Ideas Into Designs
@@ -26,20 +26,26 @@ Create a task for each applicable item and complete them in order:
 1. **Explore project context** — check files, docs, recent commits
 2. **Offer the visual companion just-in-time** — NOT upfront. The first time a question would genuinely be clearer shown than described, offer it then (its own message); on approval its browser tab opens for you. If no visual question ever arises, never offer it. See the Visual Companion section below.
 3. **Resolve consequential uncertainty** — investigate first; ask one question at a time only when missing intent or authority would materially change the result
-4. **Compare approaches** — propose 2-3 materially different viable approaches with trade-offs and a recommendation; if only one is credible, explain why
-5. **Present design** — in sections scaled to their complexity; request decisions only where the user owns a consequential choice
-6. **Write a design doc when durable handoff value justifies it** — use the governing location and commit policy; otherwise keep the design in the current task
-7. **Design/spec self-review** — quick inline check for placeholders, contradictions, ambiguity, scope (see below)
-8. **Obtain external review only when required** — for an explicit product decision, approval boundary, or requested checkpoint
-9. **Transition proportionately** — invoke the psilon writing-plans skill only if its trigger matches; otherwise implement directly
+4. **Admit approaches** — verify each candidate's load-bearing prerequisites for the exact target scope, reject false or conflicting candidates, and keep unknown prerequisites conditional
+5. **Compare approaches** — propose 2-3 materially different admitted approaches with trade-offs and a recommendation; if only one is credible, explain why
+6. **Present design** — in sections scaled to their complexity; request decisions only where the user owns a consequential choice
+7. **Write a design doc when durable handoff value justifies it** — use the governing location and commit policy; otherwise keep the design in the current task
+8. **Design/spec self-review** — quick inline check for prerequisites, placeholders, contradictions, ambiguity, and scope (see below)
+9. **Obtain external review only when required** — for an explicit product decision, approval boundary, or requested checkpoint
+10. **Transition proportionately** — invoke the psilon writing-plans skill only if its trigger matches; otherwise implement directly
 
 ## Process Flow
 
 ```dot
 digraph brainstorming {
     "Explore project context" [shape=box];
-    "Ask clarifying questions" [shape=box];
-    "Propose 2-3 approaches" [shape=box];
+    "Resolve consequential uncertainty" [shape=box];
+    "Verify candidate prerequisites" [shape=box];
+    "Any admissible approach?" [shape=diamond];
+    "Resolvable evidence or consequential decision?" [shape=diamond];
+    "Investigate evidence or ask one owned decision" [shape=box];
+    "BLOCKED - no current design is implementable" [shape=doublecircle];
+    "Compare admitted approaches" [shape=box];
     "Present design sections" [shape=box];
     "Consequential decisions resolved?" [shape=diamond];
     "Persist design if justified" [shape=box];
@@ -47,9 +53,15 @@ digraph brainstorming {
     "External review required?" [shape=diamond];
     "Plan or implement proportionately" [shape=doublecircle];
 
-    "Explore project context" -> "Ask clarifying questions";
-    "Ask clarifying questions" -> "Propose 2-3 approaches";
-    "Propose 2-3 approaches" -> "Present design sections";
+    "Explore project context" -> "Resolve consequential uncertainty";
+    "Resolve consequential uncertainty" -> "Verify candidate prerequisites";
+    "Verify candidate prerequisites" -> "Any admissible approach?";
+    "Any admissible approach?" -> "Resolvable evidence or consequential decision?" [label="no"];
+    "Resolvable evidence or consequential decision?" -> "Investigate evidence or ask one owned decision" [label="yes"];
+    "Investigate evidence or ask one owned decision" -> "Verify candidate prerequisites";
+    "Resolvable evidence or consequential decision?" -> "BLOCKED - no current design is implementable" [label="no"];
+    "Any admissible approach?" -> "Compare admitted approaches" [label="yes"];
+    "Compare admitted approaches" -> "Present design sections";
     "Present design sections" -> "Consequential decisions resolved?";
     "Consequential decisions resolved?" -> "Present design sections" [label="no, revise or ask"];
     "Consequential decisions resolved?" -> "Persist design if justified" [label="yes or no external decision"];
@@ -60,7 +72,11 @@ digraph brainstorming {
 }
 ```
 
-**The terminal state is a resolved design.** Invoke `superpowers-writing-plans-psilon` next only when its durable-plan trigger matches. Otherwise proceed with direct implementation or the applicable domain skill.
+**The terminal state is either a resolved admissible design or an explicit
+block with the evidence needed to clear it.** Invoke
+`superpowers-writing-plans-psilon` next only when a design exists and its
+durable-plan trigger matches. Otherwise proceed with direct implementation, the
+applicable domain skill, or the blocked report.
 
 ## The Process
 
@@ -76,7 +92,14 @@ digraph brainstorming {
 
 **Exploring approaches:**
 
-- Propose 2-3 materially different viable approaches with trade-offs; if only one is credible, state why
+- For each candidate, identify every load-bearing prerequisite. Verify each one against current authoritative evidence for the exact target scope, and search for evidence that disproves it.
+- Reject a candidate when a prerequisite is false or conflicts with a requirement, contract, or authority boundary. If a load-bearing prerequisite remains unknown, keep the candidate conditional and do not recommend it as the current design.
+- When no candidate is currently admissible, lead with `BLOCKED — no current
+  design is implementable` and name the evidence needed to clear the gate. A
+  possible future mechanism may appear only as a clearly labeled conditional
+  option. Do not call it the recommended design or transition it to planning.
+- Treat implementation support, a working example, or an available integration as evidence of capability only. It does not prove target coverage, data availability, compatibility, or applicability.
+- Compare 2-3 materially different admitted approaches with trade-offs; if only one is credible, state why. Keep rejected candidates internal unless the user asks for them or the rejection materially explains the recommendation.
 - Present options conversationally with your recommendation and reasoning
 - Lead with your recommended option and explain why
 - YAGNI ruthlessly - remove unnecessary features from every approach and design
@@ -114,10 +137,11 @@ digraph brainstorming {
 **Spec Self-Review:**
 After establishing the design, and after writing the spec when one is justified, look at it with fresh eyes:
 
-1. **Placeholder scan:** Any "TBD", "TODO", incomplete sections, or vague requirements? Fix them.
-2. **Internal consistency:** Do any sections contradict each other? Does the architecture match the feature descriptions?
-3. **Scope check:** Is this focused enough for a single implementation plan, or does it need decomposition?
-4. **Ambiguity check:** Could any requirement be interpreted two different ways? If so, pick one and make it explicit.
+1. **Applicability check:** Does every recommended approach have current authoritative support for each load-bearing prerequisite in the exact target scope? Did you search for disconfirming evidence? Reject false candidates; label unknown candidates conditional and exclude them from the current recommendation.
+2. **Placeholder scan:** Any "TBD", "TODO", incomplete sections, or vague requirements? Fix them.
+3. **Internal consistency:** Do any sections contradict each other? Does the architecture match the feature descriptions?
+4. **Scope check:** Is this focused enough for a single implementation plan, or does it need decomposition?
+5. **Ambiguity check:** Could any requirement be interpreted two different ways? If so, pick one and make it explicit.
 
 Fix any issues inline. No need to re-review — just fix and move on.
 

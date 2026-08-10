@@ -1,6 +1,6 @@
 ---
 name: superpowers-dispatching-parallel-agents-psilon
-description: Use when bounded scoping establishes at least two substantial independent workstreams with distinct deliverables, no sequential dependency, and non-overlapping mutable state, and parallel execution will materially reduce wall time. Dispatch focused agents while the primary retains integration ownership. Do not use for tasks inside one accepted implementation plan already governed by subagent-driven development, facets of one coupled decision, shared-path reconnaissance, related failures that may share a cause, trivial tasks split artificially, overlapping writes, or automatic review ceremony.
+description: Use when bounded scoping establishes at least two substantial independent workstreams with distinct deliverables, no sequential dependency, and non-overlapping mutable state, and parallel execution will materially reduce wall time. Dispatch focused agents while the primary retains integration ownership. Prove independence from causal and ownership evidence; do not infer it from different files, symptoms, labels, or available agent capacity. Do not use for tasks inside one accepted implementation plan already governed by subagent-driven development, facets of one coupled decision, shared-path reconnaissance, related failures that may share a cause, trivial tasks split artificially, overlapping writes, or automatic review ceremony.
 ---
 
 # Dispatching Parallel Agents
@@ -11,7 +11,9 @@ description: Use when bounded scoping establishes at least two substantial indep
 
 You delegate tasks to specialized agents with isolated context. By precisely crafting their instructions and context, you ensure they stay focused and succeed at their task. They should receive only the task-local context they need. In Codex, prefer `fork_turns: "none"` or the smallest useful recent-turn fork when constructing an isolated task; retain full-history inheritance only when the work genuinely depends on it. This also preserves your own context for coordination work.
 
-When you have multiple unrelated failures (different test files, different subsystems, different bugs), investigating them sequentially wastes time. Each investigation is independent and can happen in parallel.
+When you have multiple substantial independent deliverables or unrelated
+failures, doing them sequentially wastes wall time. Each verified independent
+workstream can proceed in parallel.
 
 **Core principle:** Dispatch one agent per independent problem domain. Let them work concurrently.
 
@@ -19,25 +21,26 @@ When you have multiple unrelated failures (different test files, different subsy
 
 ```dot
 digraph when_to_use {
-    "Multiple failures?" [shape=diamond];
-    "Are they independent?" [shape=diamond];
-    "Single agent investigates all" [shape=box];
+    "Multiple substantial workstreams?" [shape=diamond];
+    "Are they causally and operationally independent?" [shape=diamond];
+    "Primary handles coupled work" [shape=box];
     "One agent per problem domain" [shape=box];
     "Can they work in parallel?" [shape=diamond];
     "Sequential agents" [shape=box];
     "Parallel dispatch" [shape=box];
 
-    "Multiple failures?" -> "Are they independent?" [label="yes"];
-    "Are they independent?" -> "Single agent investigates all" [label="no - related"];
-    "Are they independent?" -> "Can they work in parallel?" [label="yes"];
+    "Multiple substantial workstreams?" -> "Are they causally and operationally independent?" [label="yes"];
+    "Are they causally and operationally independent?" -> "Primary handles coupled work" [label="no - related"];
+    "Are they causally and operationally independent?" -> "Can they work in parallel?" [label="yes"];
     "Can they work in parallel?" -> "Parallel dispatch" [label="yes"];
     "Can they work in parallel?" -> "Sequential agents" [label="no - shared state"];
 }
 ```
 
 **Use when:**
-- 2+ substantial problem domains with evidence of different root causes
-- Multiple subsystems broken independently
+- 2+ substantial deliverables or problem domains with verified causal, input, and ownership independence
+- For failures, evidence supports distinct causes or failure domains
+- For implementation or research, each deliverable has its own acceptance and no result dependency
 - Each problem can be understood without context from others
 - No overlapping mutable state between workstreams
 - The wall-time reduction materially exceeds dispatch and integration overhead
@@ -52,20 +55,28 @@ digraph when_to_use {
 
 ### 1. Identify Independent Domains
 
-Group failures by what's broken:
+Group work by distinct deliverable. For failures, group by what is broken:
 - File A tests: Tool approval flow
 - File B tests: Batch completion behavior
 - File C tests: Abort functionality
 
-Each domain is independent - fixing tool approval doesn't affect abort tests.
+Before dispatching, establish that each domain has a distinct deliverable,
+exclusive mutable scope, the required inputs and tool access, and no
+load-bearing dependency on another domain's result. Search for shared causes,
+contracts, generated artifacts, runtime resources, and assumptions. Different
+files or symptoms do not prove independence. If any load-bearing prerequisite
+or shared cause remains unknown, keep the bounded scoping work with the primary
+until it is resolved.
 
 ### 2. Create Focused Agent Tasks
 
 Each agent gets:
-- **Specific scope:** One test file, subsystem, or distinct deliverable, with exclusive mutable ownership when editing
-- **Clear goal:** Make these tests pass
-- **Constraints:** Don't change other code
-- **Expected output:** Summary of what you found and fixed
+- **Specific scope:** One subsystem or distinct deliverable, with exclusive mutable ownership when editing
+- **Exact target:** The users, data, environment, contract, or artifact the conclusion must cover
+- **Verified inputs:** Current authoritative sources and established prerequisites; label unresolved facts instead of supplying an expected conclusion
+- **Clear outcome:** The implementation, research finding, or failure resolution to deliver, with its acceptance boundary
+- **Constraints:** Exact mutable scope, read-only scope, dependencies, and forbidden side effects
+- **Expected output:** The artifact or concise evidence report the primary will integrate
 
 ### 3. Dispatch in Parallel
 
@@ -102,16 +113,12 @@ Fix the 3 failing tests in src/agents/agent-tool-abort.test.ts:
 2. "should handle mixed completed and aborted tools" - fast tool aborted instead of completed
 3. "should properly track pendingToolCount" - expects 3 results but gets 0
 
-These are timing/race condition issues. Your task:
+These are observed failures; their root cause is not established. Your task:
 
 1. Read the test file and understand what each test verifies
-2. Identify root cause - timing issues or actual bugs?
-3. Fix by:
-   - Replacing arbitrary timeouts with event-based waiting
-   - Fixing bugs in abort implementation if found
-   - Adjusting test expectations if testing changed behavior
-
-Do NOT just increase timeouts - find the real issue.
+2. Establish the root cause from current evidence
+3. Make the smallest correction supported by that cause; do not change
+   behavior or expectations without proving which contract is wrong
 
 Return: Summary of what you found and what you fixed.
 ```
@@ -142,11 +149,13 @@ Return: Summary of what you found and what you fixed.
 **Scenario:** 6 test failures across 3 files after major refactoring
 
 **Failures:**
-- agent-tool-abort.test.ts: 3 failures (timing issues)
+- agent-tool-abort.test.ts: 3 abort/completion assertion failures
 - batch-completion-behavior.test.ts: 2 failures (tools not executing)
 - tool-approval-race-conditions.test.ts: 1 failure (execution count = 0)
 
-**Decision:** Independent domains - abort logic separate from batch completion separate from race conditions
+**Independence gate:** Inspect the failing call paths, fixtures, shared setup,
+and mutable files. Use the dispatch below only if that bounded check establishes
+distinct causes or ownership and no load-bearing dependency between domains.
 
 **Dispatch:**
 ```

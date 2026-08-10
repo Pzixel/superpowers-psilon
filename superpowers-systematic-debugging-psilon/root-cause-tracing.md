@@ -12,14 +12,26 @@ Bugs often manifest deep in the call stack (git init in wrong directory, file cr
 digraph when_to_use {
     "Bug appears deep in stack?" [shape=diamond];
     "Can trace backwards?" [shape=diamond];
-    "Fix at symptom point" [shape=box];
+    "More evidence available and authorized?" [shape=diamond];
+    "Gather boundary evidence or authorized instrumentation" [shape=box];
+    "BLOCKED - root cause remains unknown" [shape=doublecircle];
     "Trace to original trigger" [shape=box];
-    "BETTER: Also add defense-in-depth" [shape=box];
+    "Fix at source" [shape=box];
+    "Distinct evidenced boundary failure mode?" [shape=diamond];
+    "Add minimum boundary safeguard" [shape=box];
+    "Verify fix and supported paths" [shape=doublecircle];
 
     "Bug appears deep in stack?" -> "Can trace backwards?" [label="yes"];
     "Can trace backwards?" -> "Trace to original trigger" [label="yes"];
-    "Can trace backwards?" -> "Fix at symptom point" [label="no - dead end"];
-    "Trace to original trigger" -> "BETTER: Also add defense-in-depth";
+    "Can trace backwards?" -> "More evidence available and authorized?" [label="no"];
+    "More evidence available and authorized?" -> "Gather boundary evidence or authorized instrumentation" [label="yes"];
+    "More evidence available and authorized?" -> "BLOCKED - root cause remains unknown" [label="no"];
+    "Gather boundary evidence or authorized instrumentation" -> "Can trace backwards?";
+    "Trace to original trigger" -> "Fix at source";
+    "Fix at source" -> "Distinct evidenced boundary failure mode?";
+    "Distinct evidenced boundary failure mode?" -> "Add minimum boundary safeguard" [label="yes"];
+    "Distinct evidenced boundary failure mode?" -> "Verify fix and supported paths" [label="no"];
+    "Add minimum boundary safeguard" -> "Verify fix and supported paths";
 }
 ```
 
@@ -65,7 +77,8 @@ Project.create('name', context.tempDir); // Accessed before beforeEach!
 
 ## Adding Stack Traces
 
-When you can't trace manually, add instrumentation:
+When read-only evidence cannot trace the call chain, add temporary
+instrumentation only when governing authority permits it:
 
 ```typescript
 // Before the problematic operation
@@ -133,25 +146,36 @@ Runs tests one-by-one, stops at first polluter. See script for usage.
 digraph principle {
     "Found immediate cause" [shape=ellipse];
     "Can trace one level up?" [shape=diamond];
+    "More evidence available and authorized?" [shape=diamond];
     "Trace backwards" [shape=box];
+    "Gather boundary evidence or authorized instrumentation" [shape=box];
+    "BLOCKED - root cause remains unknown" [shape=doublecircle];
     "Is this the source?" [shape=diamond];
     "Fix at source" [shape=box];
-    "Add validation at each layer" [shape=box];
-    "Bug impossible" [shape=doublecircle];
-    "NEVER fix just the symptom" [shape=octagon, style=filled, fillcolor=red, fontcolor=white];
+    "Distinct evidenced boundary failure mode?" [shape=diamond];
+    "Add safeguards at independently reachable boundaries" [shape=box];
+    "Verify supported entry and bypass paths" [shape=doublecircle];
 
     "Found immediate cause" -> "Can trace one level up?";
     "Can trace one level up?" -> "Trace backwards" [label="yes"];
-    "Can trace one level up?" -> "NEVER fix just the symptom" [label="no"];
+    "Can trace one level up?" -> "More evidence available and authorized?" [label="no"];
+    "More evidence available and authorized?" -> "Gather boundary evidence or authorized instrumentation" [label="yes"];
+    "More evidence available and authorized?" -> "BLOCKED - root cause remains unknown" [label="no"];
+    "Gather boundary evidence or authorized instrumentation" -> "Can trace one level up?";
     "Trace backwards" -> "Is this the source?";
     "Is this the source?" -> "Trace backwards" [label="no - keeps going"];
     "Is this the source?" -> "Fix at source" [label="yes"];
-    "Fix at source" -> "Add validation at each layer";
-    "Add validation at each layer" -> "Bug impossible";
+    "Fix at source" -> "Distinct evidenced boundary failure mode?";
+    "Distinct evidenced boundary failure mode?" -> "Add safeguards at independently reachable boundaries" [label="yes"];
+    "Distinct evidenced boundary failure mode?" -> "Verify supported entry and bypass paths" [label="no"];
+    "Add safeguards at independently reachable boundaries" -> "Verify supported entry and bypass paths";
 }
 ```
 
 **NEVER fix just where the error appears.** Trace back to find the original trigger.
+If no further evidence is available or authorized, keep the root cause unknown
+and report the blocked evidence boundary. Do not manufacture a source or loop on
+the same evidence request.
 
 ## Stack Trace Tips
 

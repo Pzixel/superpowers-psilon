@@ -35,6 +35,25 @@ does not prove trigger accuracy or capability preservation.
   tokens after a one-line `1h` option activated process cascades. This supports
   excluding clear local changes from brainstorming, planning, delegation,
   automatic review, and high-risk verification.
+- A 2026-08-05 Contact reply-rate trace produced seven documentation-only
+  commits before implementation. Its first complete plan promoted a
+  selection-dominated 30-day boundary that campaign-ground-truth analysis
+  rejected 24 minutes later. After a replacement implementation plan was
+  committed, 123 plan-line and 89 spec-line additions/deletions replaced a new
+  association generation, hashed identity, standalone crate, snapshot
+  reconstruction, and progress ordering before code began. The corrected next
+  milestone then named all 16 paths changed by the first implementation commit.
+  This supports evidence-qualified detail and a rolling horizon rather than
+  either no planning or exhaustive speculative planning.
+- The 2026-08-10 investigation in Codex task
+  `019febec-93bf-7141-b302-17693add9fe9` found that an agent proved the MIME
+  parser supported `X-EVA-*` but recommended it for workspace 1596 despite a
+  current README statement that the workspace had no X-EVA campaign ledger.
+  The agent repeated the recommendation, and its reviewer was anchored by a
+  prompt that presented metadata reachability as part of the candidate design.
+  This is direct evidence for a target-scope prerequisite gate: capability does
+  not prove coverage or applicability, and reviewers must receive authoritative
+  sources without receiving the proposed conclusion as fact.
 - The user's operating policy requires autonomous resolution of ordinary
   reversible engineering choices, with questions reserved for consequential
   intent or authority boundaries. This supports conditionalizing mandatory
@@ -57,16 +76,19 @@ does not prove trigger accuracy or capability preservation.
 
 ## Global metadata deviations
 
-Every fork changes only these metadata fields:
+At the metadata layer, every fork changes these fields; the body and resource
+deviations are listed separately below:
 
 - `name` becomes the provenance-preserving `-psilon` name.
 - `description` becomes a positive trigger plus explicit negative boundaries.
 - `agents/openai.yaml` keeps `policy.allow_implicit_invocation: true` so hard
   tasks activate automatically; users do not need to opt in.
 
-The body repeats a short “Codex 5.6 adaptation” scope note where upstream body
-language would otherwise broaden the frontmatter trigger. The note does not
-replace the upstream method.
+Bodies retain the upstream method except for the clause-level deviations below.
+Most repeat a short “Codex 5.6 adaptation” scope note where upstream language
+would otherwise broaden the frontmatter trigger. Writing-plans additionally
+uses a measured harmful trace to restructure detail admission and plan form
+while preserving durable handoff, sequencing, validation, and recovery.
 
 ## Clause-level deviations
 
@@ -84,10 +106,11 @@ scripts.
 | No implementation until user approval for every project | Autonomous operating policy | Keep the no-implementation-before-design gate, but require external approval only for consequential user-owned or authority decisions |
 | Mandatory nine-item checklist and user approval after each design section | Trivial-filter trace; autonomous operating policy | Preserve the sequence as applicable tasks; investigate and infer first, then ask only consequential questions |
 | Always propose 2-3 approaches | No value when only one viable approach survives evidence | Compare 2-3 materially viable approaches; explain when only one is credible |
+| “Viable” approach selection and spec review checked internal coherence but not target applicability | 2026-08-10 X-EVA trace and anchored review | Before comparison, verify every load-bearing prerequisite for the exact target, search for disconfirming evidence, reject false candidates, and keep unknown candidates conditional; when no current candidate passes, report the block and do not label a future option as the recommended design; give the reviewer target sources without asserting the conclusion |
 | A direct plan request could bypass brainstorming despite unresolved architecture | Paired Sol High hard-task run selected writing-plans alone | Explicitly activate brainstorming before planning only when consequential product or architecture choices remain unresolved |
 | Always write and commit a design spec | Trace and repository artifact/commit policy | Persist a spec only when complexity, handoff, approval, or repository policy gives it durable value; commit only when authorized |
 | Mandatory second user review of the written spec | Autonomous operating policy | External review is conditional on an approval boundary, explicit checkpoint, or consequential product decision |
-| Writing-plans is the only terminal state | Retained set and proportional-execution goal | Invoke `superpowers-writing-plans-psilon` only when its own hard-task trigger matches; otherwise implement directly |
+| Writing-plans is the only terminal state | Retained set, proportional execution, and target-admission gate | Invoke `superpowers-writing-plans-psilon` only when an admissible design exists and its hard-task trigger matches; otherwise implement directly or report the evidence block |
 | Plugin-root path to the visual guide | Fork is a standalone skill directory | Use the relative `visual-companion.md` path |
 
 `visual-companion.md` adds one path-resolution note; all companion code and
@@ -103,14 +126,22 @@ concurrent dispatch, failure examples, integration review, and spot checks.
 | Two or three independent items are sufficient regardless of size | Delegation overhead must be outweighed | Require at least two substantial independent deliverables and material wall-time benefit |
 | Agents should never inherit session history | Codex supports bounded turn forks rather than a single inheritance mode | Prefer `fork_turns: "none"` or the smallest useful fork; allow full history only when genuinely required |
 | “No shared state” framed only as investigation state | Codex agents share a filesystem | Require non-overlapping mutable scopes and primary-agent integration ownership |
+| Different files or symptoms can be treated as independent domains | 2026-08-10 capability-to-applicability failure class | Establish causal independence, required inputs, tool access, and exclusive ownership; unresolved shared causes remain with the primary for bounded scoping |
+| Body examples and trigger language describe only parallel failure investigation | Cross-file trigger audit | Preserve failure examples but generalize the method to any substantial independent implementation, research, or investigation deliverables |
 | Parallel trigger also matched tasks inside one accepted SDD plan | Two of three Sol High activation trials selected both process skills | Exclude tasks already governed by `superpowers-subagent-driven-development-psilon`; parallel owns separate external workstreams |
 | Always run the full suite after integration | Outcome-proportionate verification policy | Run the focused or full integrated checks required by the claim's scope |
 
 ### `superpowers-receiving-code-review-psilon`
 
-The upstream body is unchanged. Only the name and trigger description differ.
-The technical-verification pattern, skepticism, feedback ordering, pushback
-guidance, examples, and GitHub inline-reply guidance are preserved.
+Retained: technical verification, skepticism, feedback ordering, pushback
+guidance, examples, and GitHub inline-reply guidance.
+
+| Upstream clause | Evidence | Ppsilon adaptation |
+|---|---|---|
+| Human-partner feedback is “trusted — implement after understanding” | 2026-08-10 trace; user intent and technical diagnosis have different authority | Treat requirements and authority decisions as binding within scope, but verify diagnoses, factual claims, proposed mechanisms, and their target prerequisites before implementation |
+| An unverifiable external claim can be followed after asking whether to proceed | Same | Do not implement a load-bearing unknown as true; investigate available evidence or report the missing external evidence or authority decision |
+| Any unclear feedback item stops all work and asks immediately | Autonomous operating policy; cross-file audit found stale ask-first examples | Investigate first, block only the unclear item and its dependents, and continue independently verifiable feedback that cannot constrain the unresolved decision |
+| Implement every review item one at a time and test each | Outcome-proportionate verification and test-admission policy | Verify each confirmed fix at its smallest relevant boundary, then run one proportionate regression pass after the last relevant change |
 
 ### `superpowers-requesting-code-review-psilon`
 
@@ -125,9 +156,13 @@ and example findings.
 | Default `HEAD~1` base | Drops multi-commit coherent changes | Use the recorded change start or repository-authoritative merge base |
 | Reviewer may create a temporary git worktree | Governing repositories may prohibit all worktrees | Use read-only git inspection; a temporary archive/clone is conditional on governing policy |
 | Never skip review because work is simple | Narrow trigger already excludes low-risk work | Never skip after the high-risk trigger substantively matches |
+| Reviewer starts from the implementation summary and plan, then must acknowledge strengths | 2026-08-10 anchored-review trace | Supply exact target scope, binding requirements, and current sources; label summaries and plans as claims; check prerequisites and disconfirming evidence before code quality; make confirmed strengths optional and later |
+| Generic reviewer checklist assumes permanent tests and complete documentation for every change | Test-admission and requested-scope policy | Audit only admitted tests, outcome-proportionate evidence, and documentation required by the contract or change |
+| Reviewer can inspect only a live Git range | SDD final review emits an exact file-backed package, including snapshot tree boundaries | Accept an optional verified `[DIFF_FILE]` as the primary diff source, with the Git range as a reported fallback |
 
-The complete `code-reviewer.md` prompt is restored; only its worktree fallback
-sentence is adapted.
+The complete upstream review dimensions, severity rubric, read-only inspection,
+output contract, and example remain. The prompt also has the worktree-policy and
+independent-applicability adaptations above.
 
 ### `superpowers-subagent-driven-development-psilon`
 
@@ -135,7 +170,8 @@ Retained: fresh task briefs, per-plan workspace and recovery ledger, implementer
 report contract, preflight contradiction scan, role-aware model reasoning,
 sequential implementers, task review rubric, five-round bounded fix loop,
 scoped re-review, adjudication ledger, final integrated review, all three prompt
-templates, and all three scripts.
+templates, all four scripts, and the rationalization and example content now
+split into two linked progressive-disclosure companions.
 
 | Upstream clause | Evidence | Ppsilon adaptation |
 |---|---|---|
@@ -147,10 +183,29 @@ templates, and all three scripts.
 | Always specify a generic model tier | Codex inherits the parent model and supports a bounded model set | Inherit by default; override only for a supported, justified role-specific need |
 | Use unavailable requesting-review and branch-finishing skill names | Retained-set boundary | Point final review to the psilon reviewer prompt and follow governing integration/handoff policy |
 | Delete scratch workspace with a raw `rm -rf` instruction | Destructive-action policy | Validate the exact workspace path and prefer recoverable deletion; never touch sibling workspaces |
-| Implementer always asks on uncertainty, always commits, and runs a full suite | Autonomous, git, and verification policy | Resolve ordinary choices autonomously; commit only when authorized; run one outcome-proportionate final pass |
+| Implementer always asks or stops on ordinary uncertainty, always commits, and runs a full suite | Autonomous, git, and verification policy | Investigate and resolve ordinary choices autonomously; stop only for consequential unresolved requirements or authority, unavailable load-bearing evidence, material scope conflict, or a genuine evidence impasse; commit only when authorized; run one outcome-proportionate final pass |
+| An accepted plan and its “exact values” become the implementer's and reviewer's factual authority | 2026-08-10 capability-to-applicability and reviewer-anchoring trace | Before each dispatch, verify task prerequisites for the exact target; dispatch only Ready work; separate binding requirements from plan assumptions; give implementers and reviewers target scope and authoritative sources |
+| Task extractor recognizes only column-zero `Task N`, while the adapted writing skill emits `Milestone N` | 2026-08-10 cross-file adversarial review and smoke test | Accept either heading with CommonMark's zero-to-three-space indentation outside valid equally indented backtick or tilde fenced examples, without changing task content |
+| Uncommitted work is permitted but `review-package` diffs only commits | Same | Add stable tree-object boundaries made through a temporary index and exact authorized path list; reject broad pathspecs, nested repositories, and gitlinks the parent tree cannot represent; require one clean plan baseline; carry a cumulative exact plan scope and cumulative snapshot across tasks; reject live HEAD tree drift; stop on out-of-scope changes |
+| Per-plan workspace is keyed only by basename and ledger identity uses the caller's path spelling | Same-name, relative/absolute, and symlink plan smoke tests | Key it by sanitized canonical basename plus resolved-path hash; expose that same resolved path for ledger identity |
+| Final review names `MERGE_BASE` but commit-mode setup records only an unnamed starting revision | Cross-file adversarial state audit | Record mode and a plan-wide `MERGE_BASE` before Task 1 in both commit and snapshot modes, separately from per-task BASE values |
+| Commit-mode packages can omit uncommitted work, absorb dirty paths, or leave out-of-scope mutations outside the commit | Cross-file adversarial boundary audit; porcelain status cannot detect further edits to an already-dirty file | Require a clean initial tree in both modes; in commit mode require whole-tree cleanliness plus an in-scope BASE..HEAD path set before every review and final integration review |
+| Implementer and reviewer prompts require tests and TDD evidence even when governing policy admits no permanent test | Test-admission policy; cross-file audit | Require only admitted tests; otherwise carry outcome-proportionate reproduction or verification evidence through reports and re-review |
+| Controller routes only spec and quality verdicts after reviewer gains a target-applicability verdict | Cross-file static audit | Require and route all three verdicts through completion and fix-loop gates |
+| Applicability failures enter the ordinary five-round code fix loop | 2026-08-10 adversarial state-machine review | Resolve evidence first; reject or redesign a false mechanism and update the task before code changes; keep unknown prerequisites blocked; enter the code loop only after an admissible route exists |
+| Task and fix reviewers read implementer reports before inspecting diffs | 2026-08-10 anchored-review trace and adversarial prompt-order audit | Build the target baseline, inspect the diff and derive the actual mechanism first, then read the brief, findings, and reports as second-pass claims |
+| Review packages put implementer-authored commit subjects before the raw diff | Same anchoring failure class | Put the stat and raw diff first and retain only objective commit IDs, not subjects, in the package |
+| Snapshot tracked-path detection used `grep -q` under `pipefail` | Deleted-directory adversarial review and 5,000-file smoke test | Consume the complete `git ls-files` result in a temporary file before deciding whether a deleted scoped path must be staged |
 
-Prompt model fields are optional instead of mandatory. The scripts are byte-for-
-byte upstream copies and retain executable mode.
+Prompt model fields are optional instead of mandatory. The three retained
+upstream scripts are adapted for Task/Milestone compatibility, canonical-path
+workspace isolation, and commit-or-snapshot review boundaries. The new
+`worktree-snapshot` helper provides the cumulative exact-scope snapshot
+boundary. All four retain executable mode. The two linked Markdown companions
+move the workflow examples out of the main activation body to keep it under the
+skill-creator context guideline. The extraction adds a scope disclaimer and
+aligns the example with the reviewer output order and labels; it adds no workflow
+requirements.
 
 ### `superpowers-systematic-debugging-psilon`
 
@@ -168,9 +223,17 @@ tracing, condition-based waiting, polluter script, and pressure examples.
 | Always invoke upstream verification skill | Retained-set boundary and proportional verification | Invoke psilon high-risk verification only when its trigger matches; otherwise use focused verification |
 | Discuss architecture with the human after three failures | Autonomous operating policy | Reassess from evidence; ask only for a consequential unresolved product or authority choice |
 | Defense-in-depth validates at every layer | Repository validates at independent input boundaries and trusts constructed values | Validate each independently reachable untrusted boundary once; add later containment only for a distinct failure mode |
+| A working reference pattern can move directly into a fix, and “95%” of no-root-cause cases are asserted incomplete | 2026-08-10 capability-to-applicability trace; no source supports the percentage | Verify the reference pattern's prerequisites for the exact failing target, keep unknown applicability hypothetical, and describe unknown causes without an invented statistic or automatic retry/timeout prescription |
+| Root-cause tracing loops forever when no more evidence or authorized instrumentation exists | Cross-file adversarial state-machine review | Add an evidence-and-authority gate; when exhausted, retain the unknown cause and report the blocked evidence boundary |
 
-`defense-in-depth.md` is conditionalized accordingly. All other debugging
-resources are unchanged.
+`defense-in-depth.md` is conditionalized accordingly. `root-cause-tracing.md`
+now routes both tracing dead ends through an evidence-and-authority gate instead
+of a symptom fix or an infinite evidence loop. Both post-fix paths add a safeguard only when evidence shows a
+distinct independently reachable boundary failure mode; otherwise they proceed
+directly to verification. The main skill's quick reference and supporting-technique label use
+the same conditional test and boundary rules. The academic and pressure-test
+prompts use the fork's actual local skill path. Other debugging resources
+remain unchanged.
 
 ### `superpowers-verification-before-completion-psilon`
 
@@ -185,12 +248,14 @@ examples, and explicit reporting of failed evidence.
 | Always execute the full command and reject partial checks | Claim scope determines sufficient evidence | Run the complete command or observation set for the stated scope; never extrapolate beyond it |
 | Regression proof always uses destructive revert red-green | Test-admission and destructive-action policy | Require before/after distinguishing evidence; use revert/mutation only when safe and proportionate |
 | Re-run gates before moving or delegating | Repeated unchanged gates add no evidence | Re-run only after relevant change or for a named new risk |
+| A command, passing symptom test, or plan checklist can be treated as proof of the broad claim | 2026-08-10 mechanism-capability versus target-coverage trace | Define the exact claim and target, verify load-bearing prerequisites, search for disconfirming or limiting evidence, and require evidence at matching boundaries; a false prerequisite forces an actual-status report; treat plans and prior examples only as evidence indexes |
 
 ### `superpowers-writing-plans-psilon`
 
-Retained: scope decomposition, file responsibility mapping, explicit interfaces,
-global constraints, exact files and commands, no placeholders, coverage and type
-self-review, executable task structure, and the upstream plan-review prompt.
+Retained: durable cross-session handoff, scope decomposition, file
+responsibility mapping when verified, explicit cross-task interfaces, global
+constraints, exact fragile commands and sequences, executable outcome-level
+tasks, self-review, and the optional upstream plan-review capability.
 
 | Upstream clause | Evidence | Ppsilon adaptation |
 |---|---|---|
@@ -199,12 +264,19 @@ self-review, executable task structure, and the upstream plan-review prompt.
 | Universal TDD, frequent commits, and complete implementation code | Test/commit policy and measured plan bloat | Follow governing policies; include complete code only for fragile exact contracts |
 | Every step is a 2-5 minute action | User-provided 46-minute trivial trace and earlier oversized-plan evidence | Use coherent outcome-level tasks; micro-steps only for fragile stateful or safety-critical sequences |
 | Every task earns a fresh reviewer gate | Review overhead must be justified | Split at independently ownable, verifiable, or risk-reducing boundaries |
+| Map exact files and lock decomposition before task drafting | Contact plan repeatedly replaced association ownership, identity representation, and crate boundaries before code | Name exact files only when inspected and load-bearing; otherwise name boundaries or labeled candidates |
+| A complete plan should resolve every implementation detail before execution | Contact plan converted unsettled feasibility and snapshot semantics into exact instructions, then churned before implementation | Use an evidence-backed rolling horizon: detail the next risky milestone and keep gate-dependent later work outcome-level |
+| No placeholders or unresolved choices | The absence of an explicit unknown form encouraged plausible-looking guesses | Replace vague placeholders with discovery milestones containing evidence, decision, promotion, stop, and fallback criteria |
+| Internal consistency self-review | Multiple revised plans were internally coherent but contradicted later repository and runtime evidence | Add evidence, false-precision, horizon, ownership, and execution-cascade audits |
+| Cross-task contract consistency was lost while replacing speculative detail checks | 2026-08-10 adversarial preservation audit | For interfaces frozen in the current horizon, compare producer and consumer names, types, formats, signatures, and ownership; do not freeze provisional later interfaces |
+| Verified implementation support can still be generalized beyond its evidence scope | 2026-08-10 X-EVA trace | Add target scope to plan form; verify and try to disprove every selected approach's load-bearing prerequisites; reject false prerequisites and keep unknown ones behind explicit gates |
 | Mandatory worktree context | Direct repository-policy conflict | Follow governing workspace policy |
 | Mandatory psilon SDD or unavailable executing-plans menu | Retained-set and autonomous-execution policy | Invoke psilon SDD only when its trigger matches; otherwise execute natively without a user menu |
 
-`plan-document-reviewer-prompt.md` is fully restored and labeled optional for
-an explicit or independently justified high-risk plan review; it is not
-dispatched automatically.
+`plan-document-reviewer-prompt.md` remains optional for an explicit or
+independently justified high-risk review. Its rubric now checks evidentiary
+grounding, false precision, rolling-horizon detail, source ownership, safety,
+and restartability; it is not dispatched automatically.
 
 ## Skills intentionally not migrated
 
@@ -219,6 +291,60 @@ These upstream skills remain disabled because their literal verdict was
 - `writing-skills`
 
 ## Validation record
+
+### 2026-08-10 applicability revision
+
+The regression target was the failure in Codex task
+`019febec-93bf-7141-b302-17693add9fe9`: design exact campaign association for
+workspace 1596, starting from the proposal to reuse X-EVA headers and parser
+support. Evaluation agents had read-only access to the current `email-stats`
+repository and changed no files.
+
+- A first fresh-context run correctly found the workspace prerequisite false,
+  but still titled the future X-EVA mechanism “Recommended design.” This was
+  treated as a failed wording test, not a pass. The skill was narrowed to
+  require an explicit blocked current status and to keep any future mechanism
+  labeled conditional.
+- The post-fix fresh-context rerun (`/root/eval_fresh_v2`, no conversation fork,
+  high reasoning effort) returned `BLOCKED — no current design is
+  implementable`, cited the zero workspace-1596 X-EVA rows and current README,
+  rejected direct EVA and inference, and kept a producer-backed identity stream
+  conditional on an authoritative contract and complete target coverage.
+- The context-loaded variant (`/root/eval_context_loaded`) independently
+  rejected pure X-EVA for workspace 1596 and selected an Instantly identity
+  ledger joined through the exact outbound MIME parent. A follow-up rephrase
+  preserved that rejection and the fail-closed boundary.
+
+These outcomes prove the intended behavioral distinction for this scenario:
+parser capability did not become evidence of target coverage. They do not prove
+the trigger or design quality for unrelated domains.
+
+Structural validation after the final wording and script changes:
+
+- The skill-creator `quick_validate.py` passed all eight skill directories.
+- `git diff --check`, Markdown fence balance, and `bash -n` for all four SDD
+  scripts passed.
+- The SDD smoke repository proved Task/Milestone extraction, collision-free
+  workspaces for same-named plans, canonical identity across relative, absolute,
+  and symlink plan spellings, commit and snapshot review packages, a cumulative
+  two-task final snapshot, indented Task/Milestone headings, valid
+  backtick/tilde fence handling, rejection of
+  broad pathspecs, and rejection of live HEAD drift.
+- Snapshot mode rejects nested Git repositories and gitlinks rather than
+  silently representing only their parent gitlink SHA.
+- A commit-range package smoke test confirmed stat and raw diff precede commit
+  IDs and that the commit subject is absent.
+- An out-of-scope untracked secret was absent from both the review package and
+  Git object database. A 5,000-file tracked-directory deletion staged through
+  `git rm` appeared in full in the snapshot diff, covering both the real-index
+  and former `pipefail`/SIGPIPE failure modes. Nested-repository and committed
+  gitlink/submodule scopes were both rejected explicitly.
+- The hostile external reviewer `/root/adversarial_review` examined all eight
+  skills, changed prompts and scripts, provenance, retained workflows, and
+  intentionally unchanged companions. Its final verdict was `Approved. No
+  blocking issue remains.`
+
+### 2026-08-04 baseline
 
 Validation was run on 2026-08-04 with Codex CLI `0.146.0-alpha.9.2`, model
 `gpt-5.6-sol`, and `model_reasoning_effort="high"`. Behavioral comparisons used

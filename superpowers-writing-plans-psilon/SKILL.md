@@ -1,165 +1,280 @@
 ---
 name: superpowers-writing-plans-psilon
-description: Use when implementation needs a durable plan because it spans three or more coherent stages, multiple components with dependency or interface coordination, a migration or rollout, cross-session handoff, or high-risk sequencing where ordering and recovery matter, or when the user explicitly requests a written plan. Produce outcome-level tasks with exact constraints, dependencies, verification, and recovery where applicable. Do not use as the first process while consequential product or architecture choices remain unresolved; apply superpowers-brainstorming-psilon first, then return to planning. Do not use for a clear local change, routine work, or a task the current agent can implement directly in one session without coordination risk.
+description: >-
+  Use when implementation needs a durable execution plan because it spans three
+  or more coherent stages, multiple components with dependency or interface
+  coordination, a migration or rollout, cross-session handoff, or high-risk
+  sequencing where ordering and recovery matter, or when the user explicitly
+  requests a written plan. Produce an evidence-backed, rolling-horizon plan:
+  freeze verified contracts and the next risky milestone in executor-ready
+  detail while keeping unvalidated later work outcome-level. When a
+  consequential user-owned product or architecture decision remains unresolved,
+  apply superpowers-brainstorming-psilon first. Do not use for clear local or
+  routine work, or work the current agent can implement directly in one session
+  without coordination risk. Never invent exact files, interfaces, schemas,
+  commands, values, or performance methods merely to make a plan appear
+  complete, and never treat implementation capability as proof that an approach
+  applies to the exact target scope.
 ---
 
 # Writing Plans
 
-> **Codex 5.6 adaptation:** The frontmatter description is the scope gate. Preserve executor-ready constraints and interfaces, but size tasks around coherent outcomes rather than mandatory 2-5 minute ceremony; follow governing test, commit, workspace, and artifact policy.
+> **Superpowers v6.2.0 lineage, Codex 5.6 adaptation:** Preserve the upstream
+> capability to hand complex work across sessions, but admit detail according to
+> evidence. A durable plan is a living decision and coordination artifact, not a
+> speculative transcript of implementation.
 
-## Overview
+## Purpose
 
-Write comprehensive implementation plans assuming the engineer has zero session context for the codebase. Document what they cannot safely rediscover: exact constraints, owned files, interfaces, dependencies, authoritative references, verification, rollout, and recovery. Use complete code only where an exact fragile implementation or contract must be transferred. DRY. YAGNI. Follow the governing test and commit policies.
+Write a plan that lets a capable engineer continue without rediscovering
+consequential decisions. Preserve required outcomes, verified constraints,
+cross-component contracts, sequencing, acceptance, rollout, and recovery.
 
-Assume they are a skilled developer, but know almost nothing about our toolset or problem domain. Assume they don't know good test design very well.
+Assume the executor has no session history, but does have the current repository
+and its tools. Do not duplicate facts that are cheap and safe to rediscover. Do
+not predict incidental implementation merely to make the plan self-contained.
 
-**Announce at start:** "I'm using the superpowers-writing-plans-psilon skill to create the implementation plan."
+**Announce at start:** "I'm using the superpowers-writing-plans-psilon skill to
+create an evidence-backed implementation plan."
 
-**Context:** Follow the governing repository and user workspace policy. Do not create or depend on a worktree where it is prohibited.
+Follow governing user and repository policy. Save the plan at the user-selected
+location; otherwise use `docs/superpowers/plans/YYYY-MM-DD-<feature-name>.md`.
 
-**Save plans to:** `docs/superpowers/plans/YYYY-MM-DD-<feature-name>.md`
-- (User preferences for plan location override this default)
+## Establish the Planning Boundary
 
-## Scope Check
+Before drafting, perform the smallest bounded inspection needed to distinguish:
 
-If the spec covers multiple independent subsystems, it should have been broken into sub-project specs during brainstorming. If it wasn't, suggest breaking this into separate plans — one per subsystem. Each plan should produce working, testable software on its own.
+- the required product outcome and external contracts;
+- the exact users, data, environment, deployment, or contract scope to which the outcome must apply;
+- verified current repository or runtime facts;
+- accepted design decisions and their rationale;
+- implementation hypotheses that still need evidence;
+- consequential unknowns that can change architecture, scope, or feasibility.
 
-If consequential product semantics, architecture, persistent ownership, or
-success criteria remain unresolved, stop plan drafting and apply
-`superpowers-brainstorming-psilon` first. Return here after the design is
-coherent. Do not use this precedence rule for ordinary implementation details.
+If product semantics, success criteria, persistent ownership, or a consequential
+architecture choice remains user-owned and unresolved, stop and apply
+`superpowers-brainstorming-psilon` before writing an implementation plan.
 
-## File Structure
+If the outcome is settled but implementation feasibility is uncertain, do not
+guess a complete design. Write a discovery or prototype milestone with the
+evidence to collect, the decision it will resolve, promotion criteria, and a
+fallback. Detail later implementation only after that gate clears.
 
-Before defining tasks, map out which files will be created or modified and what each one is responsible for. This is where decomposition decisions get locked in.
+## Evidence Discipline
 
-- Design units with clear boundaries and well-defined interfaces. Each file should have one clear responsibility.
-- You reason best about code you can hold in context at once, and your edits are more reliable when files are focused. Prefer smaller, focused files over large ones that do too much.
-- Files that change together should live together. Split by responsibility, not by technical layer.
-- In existing codebases, follow established patterns. If the codebase uses large files, don't unilaterally restructure - but if a file you're modifying has grown unwieldy, including a split in the plan is reasonable.
+Every load-bearing plan statement must be supported by at least one of:
 
-This structure informs the task decomposition. Each task should produce self-contained changes that make sense independently.
+1. **Requirement** — explicit user intent, approved outcome, governing policy,
+   or real external contract.
+2. **Verified fact** — inspected current code, schema, dependency behavior,
+   runtime evidence, or an authoritative reference.
+3. **Decision** — an engineering choice justified by requirements and verified
+   facts, including material tradeoffs.
+4. **Provisional hypothesis** — clearly marked, paired with a bounded validation
+   step and explicit promote, redesign, or stop criteria.
 
-## Task Right-Sizing
+Classify statements while drafting. The finished plan need not label every
+sentence, but it must expose every provisional load-bearing choice and the
+evidence gate that controls it. An unknown is not a blank to fill with a
+plausible answer.
 
-A task is the smallest coherent outcome that can be implemented, verified, and accepted independently. Fold setup, configuration, scaffolding, and documentation into the task whose deliverable needs them. Split only where a later executor can own a distinct boundary or where ordering, recovery, or review materially benefits. Each task ends with an independently verifiable deliverable.
+Never promote correlation, a narrow benchmark, an unrepresentative cohort, a
+historical observation, or one agent's architectural preference into a fixed
+contract without stating what it actually proves. Record evidence scope and
+date when drift matters.
 
-## Outcome-Level Granularity
+For every selected approach, identify its load-bearing prerequisites. Verify
+each one against current authoritative evidence for the exact target scope, and
+search for evidence that disproves it or limits its coverage. A supported API,
+parser, integration, working example, or prior success proves capability only.
+Reject an approach whose prerequisite is false or conflicts with a requirement
+or contract. Keep an approach with an unknown load-bearing prerequisite
+conditional behind an explicit evidence gate; do not write it as the planned
+implementation.
 
-Use the least detail that still lets a fresh executor act without rediscovering consequential decisions:
-- Name the concrete outcome, exact files or boundaries, and dependencies
-- Include exact signatures, schemas, commands, and values when they are contractual or fragile
-- Include a failing-test sequence only when a permanent test qualifies under governing policy
-- Include one final task-scoped verification after the last relevant change
-- Include commit steps only when governing policy authorizes task-level commits
+## Use a Rolling Horizon
 
-Use 2-5 minute micro-steps only for fragile, stateful, or safety-critical sequences where missing an operation would plausibly cause failure. Do not copy complete routine implementation code into the plan merely to make it longer.
+Match detail to demonstrated certainty:
 
-## Plan Document Header
+- Specify the next irreversible, coordinated, or risk-bearing milestone in
+  executor-ready detail.
+- Keep later milestones at outcome, dependency, invariant, acceptance, and
+  recovery level until earlier gates establish their implementation boundary.
+- Expand later milestones when new evidence makes their exact design stable.
+- If the whole path is already verified and stable, detail the complete plan.
 
-**Every plan MUST start with this header:**
+Do not specify an exact API shape, storage design, file decomposition, benchmark
+sample count, rollout sequence, or UI representation before its prerequisite
+design and feasibility gates clear. It is valid for a durable plan to stop at a
+decision boundary and say what evidence authorizes the next revision.
+
+When implementation or new authoritative evidence disproves a plan assumption,
+update the plan, record the changed decision and reason, and remove superseded
+instructions. Requirements and authority boundaries remain binding; unexpected
+implementation difficulty does not silently relax them. Do not rewrite history
+as though the new choice had always been known.
+
+## Admit Only Useful Detail
+
+Include an exact file, function, type, schema, command, value, or code fragment
+only when at least one condition holds:
+
+- it is contractual or explicitly approved;
+- current inspection verified it and downstream coordination depends on it;
+- it is a fragile safety, migration, recovery, or ordering instruction;
+- it freezes a cross-task interface whose independent executors must share.
+
+Otherwise name the owning module, behavioral boundary, or observable outcome
+and let the executor inspect the current tree. Label likely files or interfaces
+as candidates when they remain provisional. Prefer symbols over fragile line
+numbers.
+
+Use complete code only when literal content is itself the contract or a small
+fragile sequence cannot be transferred safely in prose. Do not include
+illustrative production counts, timestamps, IDs, performance budgets, benchmark
+sample sizes, or expected outputs that could be mistaken for evidence. When a
+measurement method is not externally fixed, state the risk and required
+confidence, then select and justify the method at the measurement milestone.
+
+Keep one authoritative owner for each fact. Reference approved specs, contracts,
+runbooks, and evidence artifacts instead of copying them into the plan. Repeat
+only the minimum constraint needed to execute safely.
+
+## Structure Work Around Outcomes
+
+Map verified ownership before defining tasks. Do not "lock in" a file structure
+that has not been inspected or a decomposition that a prototype may invalidate.
+Follow established repository boundaries; restructuring is a separate decision
+that needs its own evidence and value.
+
+A task is the smallest coherent outcome that can be implemented, verified, and
+accepted independently. Fold setup, scaffolding, configuration, and docs into
+the outcome that needs them. Split only for a real dependency, handoff,
+deployment/recovery boundary, or independently meaningful acceptance gate.
+
+Use 2-5 minute micro-steps only for a fragile stateful sequence where omitting or
+reordering one operation plausibly causes failure. Do not manufacture tasks for
+routine edits, individual files, tests, commits, reviewers, or tools.
+
+## Plan Form
+
+Start every plan with:
 
 ```markdown
 # [Feature Name] Implementation Plan
 
-> **For agentic workers:** Use `superpowers-subagent-driven-development-psilon` only when its substantial-task and delegation trigger matches; otherwise execute with native planning in the current session. Steps use checkbox (`- [ ]`) syntax when a durable checklist is useful.
+> **Living plan:** Keep decisions and progress aligned with current evidence.
+> The plan does not mandate delegation or review; select those workflows at
+> execution time only when their own triggers match.
 
-**Goal:** [One sentence describing what this builds]
+**Goal:** [Observable outcome]
 
-**Architecture:** [2-3 sentences about approach]
+**Target scope:** [Exact users, data, environments, deployments, or contracts]
 
-**Tech Stack:** [Key technologies/libraries]
+**Fixed constraints:** [Only requirements and accepted decisions]
 
-## Global Constraints
+**Authoritative references:** [Current specs, contracts, evidence, or runbooks]
 
-[The spec's project-wide requirements — version floors, dependency limits,
-naming and copy rules, platform requirements — one line each, with exact
-values copied verbatim from the spec. Every task's requirements implicitly
-include this section.]
+**Current evidence:** [Verified facts that materially shape the approach]
 
----
+**Open gates:** [Only load-bearing unknowns; omit when none]
 ```
 
-## Task Structure
+Use only the following sections that add value:
 
-The template below illustrates a task where a permanent regression test and a
-task-level commit are both admitted. Omit those steps when governing policy does
-not admit them; retain the exact observable behavior and verification contract.
+```markdown
+## Milestone N: [Coherent outcome]
 
-````markdown
-### Task N: [Component Name]
+**Status:** Ready | Discovery | Provisional
 
-**Files:**
-- Create: `exact/path/to/file.py`
-- Modify: `exact/path/to/existing.py:123-145`
-- Test: `tests/exact/path/to/test.py`
+**Depends on:** [Earlier outcome or evidence gate]
 
-**Interfaces:**
-- Consumes: [what this task uses from earlier tasks — exact signatures]
-- Produces: [what later tasks rely on — exact function names, parameter
-  and return types. A task's implementer sees only their own task; this
-  block is how they learn the names and types neighboring tasks use.]
+**Scope:** [Verified files/boundaries; label candidates]
 
-- [ ] **Step 1: Establish the required observable behavior**
+**Constraints and interfaces:** [Only fixed or explicitly provisional items]
 
-```python
-def test_specific_behavior():
-    result = function(input)
-    assert result == expected
+**Work:** [Enough detail for the current evidence horizon]
+
+**Acceptance:** [Observable result and outcome-proportionate verification]
+
+**Decision gate and fallback:** [Required for Discovery or Provisional status]
 ```
 
-- [ ] **Step 2: Capture the before-change failure when a qualifying regression test or reproduction exists**
+For multi-session execution, add concise `Progress`, `Decisions`, and
+`Discoveries` sections. Record only changes that affect subsequent work. Do not
+turn the plan into a terminal log, duplicate runbook, or evidence warehouse.
 
-Run: `pytest tests/path/test.py::test_name -v`
-Expected: FAIL with "function not defined"
+Include exact verification commands only when verified for the current project
+and necessary to prove the outcome. Include commit steps only when governing
+policy authorizes milestone commits. Include permanent tests only when they
+qualify under governing test policy.
 
-- [ ] **Step 3: Implement the coherent change**
+## Explicit Gates, Not Placeholders
 
-```python
-def function(input):
-    return expected
+These remain plan failures:
+
+- `TODO`, `TBD`, "implement later", or "handle edge cases";
+- "write tests" without naming the behavior and oracle;
+- an exact-looking file, type, query, schema, value, or command that was not
+  verified;
+- a provisional choice written as a final instruction;
+- downstream detail that assumes an uncleared feasibility or design gate;
+- duplicated specifications or operational procedures with another owner.
+
+Replace vague placeholders with an explicit gate:
+
+```markdown
+**Discovery:** Determine whether the existing association table preserves the
+required literal identity at the captured version.
+
+**Evidence:** Inspect its schema, replacement semantics, and one corrected-row
+history; compare against the required identity and snapshot contract.
+
+**Decision:** Reuse it if all fields and as-of reconstruction are sufficient;
+otherwise stop and design a new owner before planning downstream queries.
 ```
 
-- [ ] **Step 4: Run outcome-proportionate verification after the last relevant change**
-
-Run: `pytest tests/path/test.py::test_name -v`
-Expected: PASS
-
-- [ ] **Step 5: Commit if governing policy authorizes it**
-
-```bash
-git add tests/path/test.py src/path/file.py
-git commit -m "feat: add specific feature"
-```
-````
-
-## No Placeholders
-
-Every step must contain the actual content an engineer needs. These are **plan failures** — never write them:
-- "TBD", "TODO", "implement later", "fill in details"
-- "Add appropriate error handling" / "add validation" / "handle edge cases"
-- "Write tests for the above" (without actual test code)
-- "Similar to Task N" (repeat the code — the engineer may be reading tasks out of order)
-- Steps that omit exact contractual details or leave consequential design choices to the executor; use code blocks only where exact code is the clearest non-redundant contract
-- References to types, functions, or methods not defined in any task
+The gate is actionable without pretending the result is already known.
 
 ## Self-Review
 
-After writing the complete plan, look at the spec with fresh eyes and check the plan against it. This is a checklist you run yourself — not a subagent dispatch.
+Before saving the plan, perform one inline review:
 
-**1. Spec coverage:** Skim each section/requirement in the spec. Can you point to a task that implements it? List any gaps.
+1. **Outcome coverage:** Does every requirement map to an outcome or acceptance
+   check without adding unsupported behavior?
+2. **Evidence audit:** Can every load-bearing detail be traced to a requirement,
+   verified fact, justified decision, or explicit provisional gate?
+3. **Applicability audit:** Is every selected approach's load-bearing prerequisite verified for the exact target scope, with disconfirming evidence checked? Is capability kept separate from coverage?
+4. **Interface consistency:** For contracts frozen inside the current planning
+   horizon, do producer and consumer milestones use the same names, types,
+   formats, method signatures, and ownership? Do not audit provisional later
+   interfaces as though they were fixed.
+5. **False-precision audit:** Remove or qualify guessed files, schemas,
+   interfaces, commands, values, cohorts, benchmark methods, and timings.
+6. **Horizon audit:** Is later work less detailed where earlier evidence gates
+   can still change it?
+7. **Ownership audit:** Does the plan reference rather than duplicate specs,
+   runbooks, policy, and evidence?
+8. **Execution audit:** Remove mandatory subagent, reviewer, worktree, TDD,
+   commit, or release ceremony not required by governing policy or a separately
+   matching skill trigger.
+9. **Restartability:** Could a fresh executor identify current state, the next
+   milestone, and every unresolved gate without relying on session history?
 
-**2. Placeholder scan:** Search your plan for red flags — any of the patterns from the "No Placeholders" section above. Fix them.
+Fix issues inline once. Do not dispatch a reviewer merely because a plan exists.
+For an explicit or independently justified high-risk plan review, use
+`plan-document-reviewer-prompt.md` and fill `[PLAN_FILE_PATH]`,
+`[TARGET_SCOPE]`, and `[AUTHORITATIVE_REFERENCES]` with the plan, exact target
+scope, and current sources that can prove or disprove its prerequisites.
 
-**3. Type consistency:** Do the types, method signatures, and property names you used in later tasks match what you defined in earlier tasks? A function called `clearLayers()` in Task 3 but `clearFullLayers()` in Task 7 is a bug.
+## Continue Execution
 
-If you find issues, fix them inline. No need to re-review — just fix and move on. If you find a spec requirement with no task, add the task.
+After saving the plan, continue toward the user's requested outcome under the
+governing authority. Detail or revise later milestones only as their gates
+clear.
 
-## Execution Handoff
-
-After saving the plan, continue autonomously under the user's requested outcome and governing authority:
-
-- Invoke `superpowers-subagent-driven-development-psilon` only when its trigger substantively matches the accepted plan and delegation overhead is justified
-- Otherwise execute inline using native plan tracking and proportionate checkpoints
-- Ask for a handoff choice only when session ownership, external coordination, or a consequential authority boundary cannot be inferred safely
-- Do not invoke unavailable upstream execution or branch-finishing skills
+Invoke `superpowers-subagent-driven-development-psilon` only when its own
+substantial-task and delegation trigger matches at execution time. Otherwise
+execute inline with native plan tracking and proportionate checkpoints. Ask for
+direction only when a consequential user choice, external coordination, or
+authority boundary cannot be resolved safely.

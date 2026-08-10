@@ -4,7 +4,7 @@
 # through the controller's context.
 #
 # Usage: task-brief PLAN_FILE TASK_NUMBER [OUTFILE]
-# Default OUTFILE: <repo-root>/.superpowers/sdd/<plan-basename>/task-<N>-brief.md
+# Default OUTFILE: <repo-root>/.superpowers/sdd/<plan-key>/task-<N>-brief.md
 # (per plan and per worktree; concurrent runs of the SAME plan in the same
 # working tree share it).
 set -euo pipefail
@@ -26,15 +26,50 @@ else
 fi
 
 awk -v n="$n" '
-  /^```/ { infence = !infence }
-  !infence && /^#+[ \t]+Task[ \t]+[0-9]+/ {
-    intask = ($0 ~ ("^#+[ \t]+Task[ \t]+" n "([^0-9]|$)"))
+  function strip_fence_indent(line, s, i) {
+    s = line
+    for (i = 0; i < 3 && substr(s, 1, 1) == " "; i++) s = substr(s, 2)
+    return s
   }
-  intask { print }
+  function open_fence(line, s, ch, i) {
+    s = strip_fence_indent(line)
+    ch = substr(s, 1, 1)
+    if (ch != "`" && ch != "~") return 0
+    for (i = 1; substr(s, i, 1) == ch; i++) {}
+    if (i - 1 < 3) return 0
+    fence_ch = ch
+    fence_len = i - 1
+    return 1
+  }
+  function close_fence(line, s, i) {
+    s = strip_fence_indent(line)
+    if (substr(s, 1, 1) != fence_ch) return 0
+    for (i = 1; substr(s, i, 1) == fence_ch; i++) {}
+    return i - 1 >= fence_len && substr(s, i) ~ /^[ \t]*$/
+  }
+  {
+    if (infence) {
+      if (intask) print
+      if (close_fence($0)) infence = 0
+      next
+    }
+    if (open_fence($0)) {
+      infence = 1
+      if (intask) print
+      next
+    }
+  }
+  {
+    heading = strip_fence_indent($0)
+    if (heading ~ /^#+[ \t]+(Task|Milestone)[ \t]+[0-9]+/) {
+      intask = (heading ~ ("^#+[ \t]+(Task|Milestone)[ \t]+" n "([^0-9]|$)"))
+    }
+    if (intask) print
+  }
 ' "$plan" > "$out"
 
 if [ ! -s "$out" ]; then
-  echo "task ${n} not found in ${plan} (no heading matching 'Task ${n}')" >&2
+  echo "task ${n} not found in ${plan} (no heading matching 'Task ${n}' or 'Milestone ${n}')" >&2
   exit 3
 fi
 

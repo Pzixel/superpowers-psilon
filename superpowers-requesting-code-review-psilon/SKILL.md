@@ -9,7 +9,7 @@ description: Use after a coherent implementation when the integrated diff affect
 
 Dispatch a code reviewer subagent to catch issues before they cascade. The reviewer gets precisely crafted context for evaluation — never your session's history.
 
-**Core principle:** Review at meaningful risk boundaries with precise, independent context.
+**Core principle:** Review at meaningful risk boundaries with precise, independent context. Give the target and evidence sources, but do not present the implementation's conclusion as established fact.
 
 ## When to Request Review
 
@@ -36,14 +36,19 @@ HEAD_SHA=$(git rev-parse HEAD)
 Dispatch a read-only reviewer subagent with isolated or minimally forked context, filling the template at [code-reviewer.md](code-reviewer.md).
 
 **Placeholders:**
-- `{DESCRIPTION}` - Brief summary of what you built
-- `{PLAN_OR_REQUIREMENTS}` - What it should do
-- `{BASE_SHA}` - Starting commit
-- `{HEAD_SHA}` - Ending commit
+- `[TARGET_SCOPE]` - Exact users, data, environment, deployment, or contract the change must cover
+- `[AUTHORITATIVE_REQUIREMENTS]` - Binding requirements and contracts
+- `[AUTHORITATIVE_REFERENCES]` - Current sources that can establish or disprove load-bearing prerequisites
+- `[DESCRIPTION]` - Implementer's claimed summary of what was built, labeled as a claim
+- `[PLAN]` - Optional decision record; not evidence that its assumptions are true
+- `[DIFF_FILE]` - Optional readable review package containing the exact integrated diff; leave blank to use the Git range
+- `[BASE_SHA]` - Starting commit
+- `[HEAD_SHA]` - Ending commit
 
 **3. Act on feedback:**
-- Fix Critical issues immediately
-- Fix Important issues before proceeding
+- Verify each finding against current code, requirements, and target evidence
+- Fix confirmed Critical issues immediately
+- Fix confirmed Important issues before proceeding
 - Note Minor issues for later
 - Push back if reviewer is wrong (with reasoning)
 
@@ -58,17 +63,21 @@ BASE_SHA=$(git merge-base HEAD origin/main)
 HEAD_SHA=$(git rev-parse HEAD)
 
 [Dispatch code reviewer subagent]
-  DESCRIPTION: Added verifyIndex() and repairIndex() with 4 issue types
-  PLAN_OR_REQUIREMENTS: Task 2 from docs/superpowers/plans/deployment-plan.md
+  TARGET_SCOPE: Existing and newly created indexes in supported deployment modes
+  AUTHORITATIVE_REQUIREMENTS: Task 2 acceptance contract
+  AUTHORITATIVE_REFERENCES: Current schema, callers, deployment configuration, and incident evidence
+  DESCRIPTION: Implementer claims it added verifyIndex() and repairIndex() with 4 issue types
+  PLAN: Task 2 from docs/superpowers/plans/deployment-plan.md
+  DIFF_FILE: /tmp/review-package-3df7661.md
   BASE_SHA: a7981ec
   HEAD_SHA: 3df7661
 
 [Subagent returns]:
-  Strengths: Clean architecture, real tests
   Issues:
     Important: Missing progress indicators
     Minor: Magic number (100) for reporting interval
-  Assessment: Ready to proceed
+  Confirmed strengths (optional): Clean architecture
+  Assessment: With fixes
 
 You: [Verify the finding, fix the progress indicators, and run focused verification]
 ```

@@ -16,28 +16,44 @@ Subagent (general-purpose):
     findings; an implementer has attempted to fix them. Your job is to
     verdict each finding and inspect the fix diff — nothing else.
 
-    ## The Task
+    ## Independent Target Baseline
 
-    Read the task brief: [BRIEF_FILE]
+    **Exact target scope:** [TARGET_SCOPE]
+    **Authoritative references:** [AUTHORITATIVE_REFERENCES]
 
-    ## The Findings Under Verification
+    Before reading the brief, findings, report, or fix diff, inspect the
+    authoritative references. Record target constraints and evidence that rules
+    out or limits a fix mechanism.
 
-    [FINDINGS]
-
-    ## The Fix
-
-    Read the implementer's report (fix reports are appended at the end):
-    [REPORT_FILE]
+    ## Independent Fix Pass
 
     **Fix base:** [FIX_BASE_SHA] (the head the previous review saw)
     **Head:** [HEAD_SHA]
     **Diff file:** [DIFF_FILE]
 
-    Read the diff file once — it contains the fix commits, a stat summary,
-    and the fix diff with surrounding context. Do not re-run git commands.
+    Before reading the brief, findings, or implementer report, read the diff
+    file once. It contains a stat summary, the fix diff with surrounding
+    context, and objective commit IDs. Do not re-run git commands.
     If the diff file is missing, fetch the diff yourself:
     `git diff --stat [FIX_BASE_SHA]..[HEAD_SHA]` and
     `git diff [FIX_BASE_SHA]..[HEAD_SHA]`.
+
+    Derive what the fix actually changed and its load-bearing prerequisites
+    from the diff. Compare them with the independent target baseline and record
+    evidence that disproves or limits their applicability.
+
+    ## The Findings Under Verification
+
+    [FINDINGS]
+
+    ## The Task
+
+    Read the task brief: [BRIEF_FILE]
+
+    ## What the Implementer Claims the Fix Did
+
+    Read the implementer's report (fix reports are appended at the end):
+    [REPORT_FILE]
 
     Your review is read-only on this checkout. Do not mutate the working
     tree, the index, HEAD, or branch state in any way.
@@ -51,15 +67,21 @@ Subagent (general-purpose):
     does not block this task and does not extend the loop. A broad
     whole-branch review happens after all tasks are complete.
 
+    Treat the brief, prior finding, and implementer report as claims where they
+    state facts or mechanisms. For each load-bearing prerequisite touched by a
+    finding or fix, verify applicability against the authoritative references
+    for the exact target scope. A fix that is internally consistent but depends
+    on a false or still-unknown prerequisite is NOT ADDRESSED.
+
     ## Tests
 
-    The implementer re-ran the tests covering the amended code and appended
-    the results to the report file. Treat the report as unverified claims:
-    confirm the fix report names the covering tests and shows their output,
-    and verify the claims against the diff. Do not re-run the suite to
-    confirm their report. Run a test only when reading the code raises a
-    specific doubt that no existing run answers — and then a focused test,
-    never a package-wide suite.
+    The implementer re-ran outcome-proportionate checks covering the amended
+    code and appended the results to the report file. Treat the report as
+    unverified claims: confirm the fix report names the covering checks and
+    shows their output, and verify the claims against the diff. Do not repeat
+    the same checks merely to confirm the report. Run a test only when reading
+    the code raises a specific doubt that no existing run answers — and then a
+    focused test, never a package-wide suite.
 
     ## Output Format
 
@@ -93,11 +115,13 @@ Subagent (general-purpose):
 **Placeholders:**
 - `[MODEL]` — optional reviewer override; inherit the parent model unless a supported role-specific override is justified
 - `[BRIEF_FILE]` — the task brief file (same file the implementer worked from)
+- `[TARGET_SCOPE]` — the exact users, data, environment, deployment, or contract the task must cover
+- `[AUTHORITATIVE_REFERENCES]` — current sources that can establish or disprove prerequisites involved in the findings or fix
 - `[FINDINGS]` — the Critical/Important findings and spec gaps from the
   previous review, copied verbatim, one per bullet
 - `[REPORT_FILE]` — the implementer's report file (fix reports appended)
-- `[FIX_BASE_SHA]` — the head the previous review saw
-- `[HEAD_SHA]` — current commit
+- `[FIX_BASE_SHA]` — commit or worktree-snapshot tree the previous review saw
+- `[HEAD_SHA]` — current commit or worktree-snapshot tree
 - `[DIFF_FILE]` — the path `scripts/review-package PLAN_FILE FIX_BASE HEAD` printed
 
 **Re-reviewer returns:** per-finding verdicts (ADDRESSED / NOT ADDRESSED),

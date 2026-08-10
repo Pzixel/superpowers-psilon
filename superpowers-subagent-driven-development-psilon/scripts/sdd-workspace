@@ -3,10 +3,11 @@
 # short-lived artifacts: task briefs, implementer reports, review packages,
 # and the progress ledger. Print the plan directory's absolute path.
 #
-# One directory per plan (.superpowers/sdd/<plan-basename>/) so a follow-up
-# plan in the same working tree can never read or overwrite another plan's
-# artifacts. A stale ledger misread as current progress makes controllers
-# skip whole task sequences — plan-scoping removes that failure structurally.
+# One directory per canonical plan path
+# (.superpowers/sdd/<plan-basename>-<path-hash>/) so same-named plans in
+# different directories cannot read or overwrite each other's artifacts. A
+# stale ledger misread as current progress makes controllers skip whole task
+# sequences — path-scoping removes that failure structurally.
 #
 # The workspace lives in the working tree (not under .git/) because Claude Code
 # treats .git/ as a protected path and denies agent writes there — which blocks
@@ -28,13 +29,17 @@ fi
 plan=$1
 [ -f "$plan" ] || { echo "no such plan file: $plan" >&2; exit 2; }
 
-slug=$(basename "$plan" .md)
+plan_abs=$(realpath "$plan")
+raw_slug=$(basename "$plan_abs" .md)
+slug=$(printf '%s' "$raw_slug" | sed 's/[^A-Za-z0-9._-]/-/g')
 [ -n "$slug" ] && [ "$slug" != "." ] && [ "$slug" != ".." ] \
   || { echo "cannot derive a workspace name from: $plan" >&2; exit 2; }
+path_hash=$(printf '%s' "$plan_abs" | shasum -a 256 | cut -c1-12)
 
 root=$(git rev-parse --show-toplevel)
 base="$root/.superpowers/sdd"
-dir="$base/$slug"
+dir="$base/${slug}-${path_hash}"
 mkdir -p "$dir"
 printf '*\n' > "$base/.gitignore"
+printf '%s\n' "$plan_abs" > "$dir/plan-path"
 cd "$dir" && pwd
