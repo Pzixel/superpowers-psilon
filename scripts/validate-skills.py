@@ -13,7 +13,7 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 NAME = re.compile(r"^[a-z0-9-]{1,64}$")
 LINK = re.compile(r"\[[^]]+\]\(([^)]+)\)")
-EXPECTED_SKILLS = 8
+EXPECTED_SKILLS = 9
 MAX_DESCRIPTION_CHARS = 450
 MAX_DESCRIPTION_WORDS = 60
 MAX_BODY_LINES = 250

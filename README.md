@@ -1,6 +1,6 @@
 # Superpowers psilon
 
-Eight personal forks of [obra/superpowers](https://github.com/obra/superpowers), adapted for Codex 5.6. They keep the upstream methods but use narrow implicit triggers, exact-target evidence gates, proportional planning/review, and repository-owned policy.
+Eight personal forks of [obra/superpowers](https://github.com/obra/superpowers), adapted for Codex 5.6, plus one repository-authored ClickHouse table-design guard. They use narrow implicit triggers, exact-target evidence gates, proportional workflows, and repository-owned policy.
 
 The original Superpowers plugin is not required.
 
@@ -16,6 +16,7 @@ The original Superpowers plugin is not required.
 | `superpowers-requesting-code-review-psilon` | Independent review at a material integration-risk boundary |
 | `superpowers-receiving-code-review-psilon` | Concrete review feedback to assess or implement |
 | `superpowers-verification-before-completion-psilon` | Fresh proof before production, security, data, concurrency, migration, contract, release, or broad-system completion |
+| `superpowers-clickhouse-table-design-psilon` | Any proposed or actual ClickHouse table creation or schema change |
 
 ## Install for one user
 

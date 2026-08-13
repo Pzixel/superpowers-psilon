@@ -9,10 +9,12 @@
 - Fork date: 2026-08-04
 - License: MIT; see `LICENSE.superpowers`
 
-The eight directories in this repository are provenance-named personal forks,
-not upstream plugin installations. The original plugin remains disabled. Each
-fork keeps `superpowers-<upstream-name>-psilon` as both its directory and
-frontmatter name so users can identify its lineage.
+Eight directories in this repository are provenance-named personal forks, not
+upstream plugin installations. The original plugin remains disabled. Each fork
+keeps `superpowers-<upstream-name>-psilon` as both its directory and frontmatter
+name so users can identify its lineage. The repository also contains the
+repository-authored `superpowers-clickhouse-table-design-psilon` skill described
+below; it is not derived from an upstream Superpowers skill.
 
 ## Preservation rule
 
@@ -97,6 +99,19 @@ force, exceptions, or review ordering. The validation record below gives the
 measured reduction and independent checks.
 
 ## Clause-level deviations
+
+### `superpowers-clickhouse-table-design-psilon`
+
+Added 2026-08-13 from a user request that every agent read the supplied 2026
+ClickHouse query-optimization guide before creating or modifying a ClickHouse
+table. The supplied guide is preserved as a bundled reference. The skill makes
+a complete fresh read its first fail-closed step, activates for proposed and
+actual table-definition changes, and excludes query-only or data-only work.
+
+The workflow treats the guide as required input while requiring exact-target
+evidence for schema decisions, so general optimization advice cannot override
+repository authority, data semantics, version compatibility, or measured
+workload behavior.
 
 ### `superpowers-brainstorming-psilon`
 
