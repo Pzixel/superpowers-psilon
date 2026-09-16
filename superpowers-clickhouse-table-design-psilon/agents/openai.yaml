@@ -1,7 +1,0 @@
-interface:
-  display_name: "Superpowers: ClickHouse Table Design (psilon)"
-  short_description: "Guard ClickHouse table design and changes"
-  default_prompt: "Use $superpowers-clickhouse-table-design-psilon before creating or modifying this ClickHouse table."
-
-policy:
-  allow_implicit_invocation: true
