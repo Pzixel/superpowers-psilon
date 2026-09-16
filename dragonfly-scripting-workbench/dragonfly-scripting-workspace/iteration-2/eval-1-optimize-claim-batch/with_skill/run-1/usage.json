@@ -1,0 +1,19 @@
+{
+  "skill_files_read": [
+    "/Users/pzixel/Documents/Repos/codex-personal-skills/dragonfly-scripting-workbench/dragonfly-scripting/SKILL.md",
+    "/Users/pzixel/Documents/Repos/codex-personal-skills/dragonfly-scripting-workbench/dragonfly-scripting/references/measurements.md",
+    "/Users/pzixel/Documents/Repos/codex-personal-skills/dragonfly-scripting-workbench/dragonfly-scripting/references/lua-patterns.md",
+    "/Users/pzixel/Documents/Repos/codex-personal-skills/dragonfly-scripting-workbench/dragonfly-scripting/scripts/bench_script.py",
+    "/Users/pzixel/Documents/Repos/codex-personal-skills/dragonfly-scripting-workbench/dragonfly-scripting/assets/examples/claim_mailbox_batch_spec.json",
+    "/Users/pzixel/Documents/Repos/codex-personal-skills/dragonfly-scripting-workbench/dragonfly-scripting/assets/examples/claim_mailbox_batch_seed.py"
+  ],
+  "skill_scripts_run": [
+    "/Users/pzixel/Documents/Repos/codex-personal-skills/dragonfly-scripting-workbench/lab/.venv/bin/python /Users/pzixel/Documents/Repos/codex-personal-skills/dragonfly-scripting-workbench/dragonfly-scripting/scripts/bench_script.py --spec outputs/claim_mailbox_batch_spec.json --seed outputs/claim_mailbox_batch_seed.py --reseed --host 127.0.0.1 --port 32825 --compare outputs/claim_mailbox_batch.orig.lua outputs/claim_mailbox_batch.lua",
+    "/Users/pzixel/Documents/Repos/codex-personal-skills/dragonfly-scripting-workbench/lab/.venv/bin/python /Users/pzixel/Documents/Repos/codex-personal-skills/dragonfly-scripting-workbench/dragonfly-scripting/scripts/bench_script.py --spec outputs/claim_mailbox_batch_spec.json --seed outputs/claim_mailbox_batch_seed.py --reseed --host 127.0.0.1 --port 32826 --compare outputs/claim_mailbox_batch.orig.lua outputs/claim_mailbox_batch.lua"
+  ],
+  "skill_assets_used": [
+    "/Users/pzixel/Documents/Repos/codex-personal-skills/dragonfly-scripting-workbench/dragonfly-scripting/assets/examples/claim_mailbox_batch_seed.py",
+    "/Users/pzixel/Documents/Repos/codex-personal-skills/dragonfly-scripting-workbench/dragonfly-scripting/assets/examples/claim_mailbox_batch_spec.json"
+  ],
+  "server_interactions": 5400
+}

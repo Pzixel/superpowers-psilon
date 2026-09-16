@@ -1,0 +1,2 @@
+{"skill_read": false, "references_read": [], "scripts_run": [], "lab_used": true,
+ "evidence": "baseline arm; no path under dragonfly-scripting/ appears in its transcript.md. It built its own harness.py/bench.py/difftest.py and used INFO commandstats rather than the eval coordination counters or SCRIPT LATENCY."}

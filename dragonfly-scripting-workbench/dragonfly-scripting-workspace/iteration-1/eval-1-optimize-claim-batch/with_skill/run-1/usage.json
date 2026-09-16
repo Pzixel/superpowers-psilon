@@ -1,0 +1,6 @@
+{"skill_read": true,
+ "references_read": ["references/execution-model.md", "references/lua-patterns.md"],
+ "scripts_run": ["scripts/bench_script.py", "scripts/lab.sh"],
+ "assets_used": ["assets/compose.yaml", "assets/examples/claim_mailbox_batch_seed.py", "assets/examples/claim_mailbox_batch_spec.json"],
+ "lab_used": true,
+ "evidence": "transcript.md 'Files read' lists dragonfly-scripting/SKILL.md plus references/execution-model.md and references/lua-patterns.md; 'Commands run' invokes scripts/bench_script.py and scripts/lab.sh; the arm reused assets/examples/claim_mailbox_batch_{seed.py,spec.json} as its seed/spec and reported eval_io_coordination_total +1.00 / eval_shardlocal_coordination_total +0.00 per invocation, a counter pair that only the skill's execution-model reference names"}

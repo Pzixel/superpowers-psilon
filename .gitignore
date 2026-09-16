@@ -9,3 +9,5 @@ __pycache__/
 *.key
 *.pem
 *.p12
+dragonfly-scripting-workbench/lab/data/
+dragonfly-scripting-workbench/**/iteration-*/**/outputs/

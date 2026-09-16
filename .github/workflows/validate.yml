@@ -24,6 +24,7 @@ jobs:
             superpowers-brainstorming-psilon/scripts/*.sh
             superpowers-subagent-driven-development-psilon/scripts/*
             superpowers-systematic-debugging-psilon/*.sh
+            dragonfly-scripting/scripts/*.sh
           )
           for script in "${scripts[@]}"; do
             bash -n "$script"

@@ -1,0 +1,5 @@
+{"skill_read": true,
+ "references_read": ["references/execution-model.md", "references/lua-patterns.md"],
+ "scripts_run": [],
+ "lab_used": false,
+ "evidence": "transcript.md lists reads of dragonfly-scripting/SKILL.md, references/execution-model.md, references/lua-patterns.md; REVIEW.md cites [lab Q3,Q4,Q5,Q7,Q9,Q10][S1] measurement ids from the skill's reference set; zero docker/redis-cli invocations in transcript"}

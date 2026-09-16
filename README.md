@@ -4,6 +4,8 @@ Eight personal forks of [obra/superpowers](https://github.com/obra/superpowers),
 
 The original Superpowers plugin is not required.
 
+`dragonfly-scripting` is repository-authored: a Dragonfly v1.34.0 Lua/EVALSHA skill grounded in a local docker lab and cited sources. Its development material (lab benchmarks, research reports, source register, eval workspace, plan and handoffs, final report) lives in `dragonfly-scripting-workbench/`, which is not a skill; start at `dragonfly-scripting-workbench/REPORT.md`.
+
 ## Skills
 
 | Skill | Trigger |
@@ -17,6 +19,7 @@ The original Superpowers plugin is not required.
 | `superpowers-receiving-code-review-psilon` | Concrete review feedback to assess or implement |
 | `superpowers-verification-before-completion-psilon` | Fresh proof before production, security, data, concurrency, migration, contract, release, or broad-system completion |
 | `superpowers-clickhouse-table-design-psilon` | Any proposed or actual ClickHouse table creation or schema change |
+| `dragonfly-scripting` | Any Dragonfly server-side scripting work (Lua/EVALSHA design, review, optimization, measurement) |
 
 ## Install for one user
 

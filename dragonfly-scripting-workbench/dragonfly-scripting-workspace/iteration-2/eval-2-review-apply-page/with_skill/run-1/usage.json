@@ -1,0 +1,10 @@
+{
+  "skill_files_read": [
+    "/Users/pzixel/Documents/Repos/codex-personal-skills/dragonfly-scripting-workbench/dragonfly-scripting/SKILL.md"
+  ],
+  "skill_scripts_run": [
+    "python3 /Users/pzixel/Documents/Repos/codex-personal-skills/dragonfly-scripting-workbench/dragonfly-scripting/scripts/lua_call_audit.py /Users/pzixel/Documents/Repos/codex-personal-skills/dragonfly-scripting-workbench/dragonfly-scripting-workspace/evals/inputs/apply_new_mutable_mailbox_page.lua"
+  ],
+  "skill_assets_used": [],
+  "server_interactions": 0
+}

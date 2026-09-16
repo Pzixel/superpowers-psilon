@@ -1,0 +1,5 @@
+{"skill_read": true,
+ "references_read": ["references/lua-patterns.md", "references/measurements.md"],
+ "scripts_run": ["scripts/lab.sh", "assets/examples/claim_mailbox_batch_seed.py (read as template)"],
+ "lab_used": true,
+ "evidence": "transcript.md lists reads of dragonfly-scripting/SKILL.md, references/lua-patterns.md, references/measurements.md, scripts/lab.sh, assets/examples/claim_mailbox_batch_{seed.py,spec.json}; 33 docker/redis-cli invocations; container eval-3-ws-df started and removed; reported a contradiction with references/measurements.md (SCRIPT FLUSH did not reset SCRIPT LATENCY on v1.34.0)"}
