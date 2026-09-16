@@ -55,4 +55,5 @@ jobs:
           test "$actual" = "$expected"
           tar -xzf "$RUNNER_TEMP/$asset" -C "$RUNNER_TEMP" gitleaks
           "$RUNNER_TEMP/gitleaks" git --no-banner --no-color --redact \
-            --exit-code 1 --log-opts='--all --full-history' .
+            --exit-code 1 --log-opts='--all --full-history' \
+            --config .gitleaks.toml .
