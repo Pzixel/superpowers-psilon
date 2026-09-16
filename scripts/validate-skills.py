@@ -13,7 +13,7 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 NAME = re.compile(r"^[a-z0-9-]{1,64}$")
 LINK = re.compile(r"\[[^]]+\]\(([^)]+)\)")
-EXPECTED_SKILLS = 10
+EXPECTED_SKILLS = 9
 # Agent Skills spec caps description at 1024 characters; ~100 words is the
 # skill-creator guidance for the always-loaded metadata level.
 MAX_DESCRIPTION_CHARS = 1024
