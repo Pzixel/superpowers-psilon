@@ -23,6 +23,23 @@ head=$3
 git rev-parse --verify --quiet "$base^{tree}" >/dev/null || { echo "bad BASE tree-ish: $base" >&2; exit 2; }
 git rev-parse --verify --quiet "$head^{tree}" >/dev/null || { echo "bad HEAD tree-ish: $head" >&2; exit 2; }
 
+# Commit ranges must contain work descended from BASE. Tree snapshots have no
+# ancestry; they remain valid diff boundaries and skip these commit guards.
+base_commit=
+head_commit=
+if [ "$(git cat-file -t "$base^{}")" = commit ] && [ "$(git cat-file -t "$head^{}")" = commit ]; then
+  base_commit=$(git rev-parse "$base^{commit}")
+  head_commit=$(git rev-parse "$head^{commit}")
+  git merge-base --is-ancestor "$base_commit" "$head_commit" || {
+    echo "HEAD is not a descendant of BASE: ${base}..${head}" >&2
+    exit 3
+  }
+  [ "$base_commit" != "$head_commit" ] || {
+    echo "empty commit range: ${base}..${head}" >&2
+    exit 3
+  }
+fi
+
 if [ $# -eq 4 ]; then
   out=$4
 else
@@ -40,15 +57,15 @@ fi
   git diff -U10 "$base" "$head"
   echo
   echo "## Commit IDs"
-  if [ "$(git cat-file -t "$base")" = commit ] && [ "$(git cat-file -t "$head")" = commit ]; then
-    git rev-list --reverse "${base}..${head}"
+  if [ -n "$base_commit" ] && [ -n "$head_commit" ]; then
+    git rev-list --reverse "${base_commit}..${head_commit}"
   else
     echo "Working-tree snapshots; no commit range."
   fi
 } > "$out"
 
-if [ "$(git cat-file -t "$base")" = commit ] && [ "$(git cat-file -t "$head")" = commit ]; then
-  commits=$(git rev-list --count "${base}..${head}")
+if [ -n "$base_commit" ] && [ -n "$head_commit" ]; then
+  commits=$(git rev-list --count "${base_commit}..${head_commit}")
 else
   commits=0
 fi

@@ -5,51 +5,21 @@ description: Use for concrete user or external code-review feedback to assess, a
 
 # Receiving Code Review
 
-Code review needs technical judgment, not emotional performance.
+Separate the requested outcome from the reviewer's diagnosis and proposed mechanism. User requirements and authority decisions bind; technical claims still need verification against the current code and exact target.
 
-**Core principle:** Verify before implementing. Investigate before assuming. Correctness over social comfort.
+## Assess and Act
 
-## Response Pattern
+1. Read the feedback together and identify the governing requirements, affected behavior, and dependencies between items.
+2. Check each claim against code, current target evidence, compatibility needs, and the reason for existing behavior. Seek evidence that disproves the diagnosis; a working mechanism elsewhere does not establish applicability here.
+3. Correct confirmed defects within authority. Reject incorrect findings with specific evidence; resolve disputed evidence before dependent changes. Neither a reviewer nor a plan creates a requirement from a preference.
+4. Verify each correction at its smallest meaningful boundary, then run one proportionate regression pass after the last relevant change. Apply governing test-admission rules to permanent and temporary tests alike.
 
-1. **READ** all feedback without reacting.
-2. **UNDERSTAND** the requested outcome; separate it from diagnosis and proposed mechanism.
-3. **VERIFY** every technical claim and load-bearing prerequisite for the exact target.
-4. **EVALUATE** correctness and applicability in this codebase.
-5. **RESPOND** with technical acknowledgment or evidence-backed pushback.
-6. **IMPLEMENT** confirmed items one at a time; verify each at its smallest boundary, then run one proportionate regression pass after the last relevant change.
+For an unclear item, investigate before changing it or its dependents. Continue independent verified work that cannot constrain the unresolved decision. Prioritize blocking and security defects, then group the remaining work by dependencies and coherent corrections rather than forcing a review/fix/check cycle for every comment.
 
-## Authority and Evidence
+Ask only when consequential intent, authority, a conflict with a binding user decision, or unavailable required evidence cannot be resolved from the existing instructions and investigation. Do not add unused features merely because a reviewer calls them professional.
 
-- User requirements and authority decisions bind within scope.
-- User and reviewer diagnoses, facts, and mechanisms still need proof. Capability elsewhere does not prove applicability here.
-- Search current code, requirements, target evidence, disconfirming evidence, compatibility needs, and the reason for existing behavior.
-- Never implement a load-bearing unknown as true. Investigate available evidence; ask only for unresolved consequential intent, authority, or unavailable external evidence.
-- If external feedback conflicts with a user decision, stop and resolve that conflict with the user.
+## Communicate the Result
 
-## Unclear or Multi-Item Feedback
+State the verified change, the technical reason for disagreement, or the exact missing evidence. Correct an earlier mistaken conclusion briefly when new evidence disproves it. Acknowledgment is not proof or correction.
 
-For an unclear item, do not implement it or its dependents. Investigate first. Continue only independent verified items that cannot constrain the unresolved decision.
-
-Order confirmed work:
-
-1. blocking or security issues;
-2. simple fixes;
-3. complex refactors or logic.
-
-Coupled items wait for their shared decision. Independent items need not wait.
-
-## Push Back
-
-Push back when a suggestion is wrong for the stack, breaks required behavior, ignores compatibility or context, violates a user architecture decision, or adds unused “professional” features. Check actual use first; if unused, ask whether to remove it under YAGNI instead of building it out.
-
-Use code, checks, and specific questions. If you dislike pushing back, state the technical conflict anyway. If later evidence proves you wrong, correct the record briefly: what you checked, what it proves, and the resulting action. Do not defend the old view or write a long apology.
-
-## Communication Rules
-
-**Never say:** “You're absolutely right,” “Great point,” or “Excellent feedback.” Before verification, also never say “Let me implement that now.”
-
-For correct feedback, state the change or act: `Fixed. [what changed]`. After verification, only a brief `Good catch` acknowledgment is allowed. Do not use other gratitude, praise, performative agreement, or long apologies.
-
-## GitHub Replies
-
-Reply to inline GitHub review comments in their thread (`gh api repos/{owner}/{repo}/pulls/{pr}/comments/{id}/replies`), never as a top-level PR comment.
+When replies are authorized, answer inline GitHub review comments in their own thread (`gh api repos/{owner}/{repo}/pulls/{pr}/comments/{id}/replies`), not as top-level PR comments. Reviewing or fixing feedback alone does not authorize sending a message.

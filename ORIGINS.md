@@ -12,9 +12,58 @@
 Eight directories in this repository are provenance-named personal forks, not
 upstream plugin installations. The original plugin remains disabled. Each fork
 keeps `superpowers-<upstream-name>-psilon` as both its directory and frontmatter
-name so users can identify its lineage. The repository also contains the
-repository-authored `superpowers-clickhouse-table-design-psilon` skill described
-below; it is not derived from an upstream Superpowers skill.
+name so users can identify its lineage. The current set also contains the repository-authored `dragonfly-scripting`
+skill. The retired ClickHouse guard described below is historical and was not
+derived from an upstream Superpowers skill.
+
+## Current adaptation: 2026-09-29
+
+The user approved a selective refresh for capable models and installation in
+Codex and Claude Code. This section supersedes conflicting baseline workflow
+or metadata descriptions below; dated validation records remain historical.
+The original derivation stays pinned to v6.2.0. Selected changes were compared
+against upstream v6.4.2, commit `8ca22dba9a94f28898bbce59f2537ff4d87c747d`.
+
+- SDD is explicitly selected by the user, not automatically selected by plan
+  size. Codex metadata disables implicit invocation; the documented Claude
+  installation applies its `user-invocable-only` override. Other skills retain
+  their scoped automatic activation. Writing-plans defaults to inline execution.
+- Upstream's no-subagents contract is carried into implementer and reviewer
+  prompts. The controller owns dispatches, preventing duplicate review trees.
+- Reviewers re-read truncated evidence at its source and check revision/claim
+  coverage before requesting new execution. Missing evidence remains a gap.
+- Commit review ranges reject equal or non-descendant boundaries before any
+  package/workspace write. This adapts upstream's guard to preserve local tree
+  snapshots, which have no commit ancestry; annotated commit refs are resolved
+  consistently for guards and commit IDs.
+- SDD rejects unsupported findings with recorded evidence before fix dispatch,
+  rather than waiting for five rounds. Repeated failures without new evidence
+  require reassessment; stronger-model escalation is conditional on availability.
+  Real acceptance violations remain incomplete and cannot be waived by a ruling.
+- Brainstorming can run authorized bounded feasibility discovery or hand off a
+  Discovery milestone. Conditional approaches remain inadmissible production
+  designs until their prerequisites are proved; prototypes are not deployments.
+- Writing-plans sizes steps by checkable outcomes and checks proportion without
+  imposing a document-length quota. Local evidence-qualified detail, rolling
+  horizon, and the optional plan reviewer are retained.
+- Debugging chooses observations by unresolved uncertainty instead of requiring
+  every phase or reading every reference in full. Causal proof and authoritative
+  invariants still govern corrections. Pressure scenarios follow this behavior;
+  the obsolete phase-recitation exercise is removed.
+- Receiving-review and verification remain self-contained compact skills for
+  both clients. Technical verification, authority, proof boundaries, and test
+  admission survive; repeated rhetoric and communication micromanagement do not.
+  Temporary tests obey the same exclusions as permanent ones. Review handoffs
+  preserve governing architecture, test, authority, and delivery requirements.
+- The current set contains eight Superpowers forks and `dragonfly-scripting`.
+  The former ClickHouse guard was removed on 2026-09-16 in favor of
+  `ClickHouse/agent-skills`; its earlier provenance below is historical.
+
+Not imported: universal design/plan reapproval, reviewer-invented requirements,
+automatic acceptance of unresolved defects through controller rulings, the
+seven-analyst diagnosing workflow, or packaging changes unsupported by the
+current Git/symlink installation. No claim of measured Astra cost improvement
+is made by this refresh.
 
 ## Preservation rule
 

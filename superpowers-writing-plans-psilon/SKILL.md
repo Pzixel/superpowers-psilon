@@ -5,7 +5,7 @@ description: 'Use for durable plans spanning 3+ stages, component/interface coor
 
 # Writing Plans
 
-> **Superpowers v6.2.0 lineage, Codex 5.6 adaptation:** Preserve complex cross-session handoff, but admit detail only when evidence supports it. A plan is a living decision and coordination record, not speculative implementation prose.
+> Preserve complex cross-session handoff, but admit detail only when evidence supports it. A plan is a living decision and coordination record, not speculative implementation prose.
 
 Write for a capable engineer with the current repository and tools but no session history. Preserve outcomes, verified constraints, shared contracts, order, acceptance, rollout, and recovery. Omit facts that are cheap and safe to rediscover.
 
@@ -62,7 +62,7 @@ Give each fact one owner. Reference specs, contracts, runbooks, and evidence; re
 
 Map verified ownership before tasks. Follow inspected repository boundaries; do not freeze speculative files or decomposition. Treat restructuring as a separate decision: require evidence that current boundaries cannot support the outcome or that restructuring has material cumulative value. A task is the smallest independently implementable, verifiable, and acceptable outcome. Fold setup, scaffolding, config, and docs into the outcome that needs them. Split only for a real dependency, handoff, deployment/recovery boundary, or independent acceptance gate.
 
-Use 2–5 minute steps only for fragile stateful sequences where omission or reordering can fail. Never create tasks merely for files, routine edits, tests, commits, reviewers, or tools.
+Size steps by a checkable result. Spell out fragile stateful sequences where omission or reordering can fail. Never create tasks merely for files, routine edits, tests, commits, reviewers, or tools.
 
 ## Plan Form
 
@@ -118,8 +118,10 @@ Before saving, fix once:
 8. no subagent, reviewer, worktree, TDD, commit, or release ceremony exists without policy or a matching skill trigger;
 9. a fresh executor can find current state, next milestone, and every open gate.
 
+Check proportion: if the plan mostly repeats the spec or writes the future implementation, keep the decisions, shared interfaces, admitted test oracles, and acceptance checks; remove redundant bodies and prose. Length alone is not a defect when coordination or recovery requires the detail.
+
 Do not dispatch review merely because a plan exists. For an explicit or independently justified high-risk review, use [plan-document-reviewer-prompt.md](plan-document-reviewer-prompt.md) with `[PLAN_FILE_PATH]`, `[TARGET_SCOPE]`, and `[AUTHORITATIVE_REFERENCES]`.
 
 ## Continue
 
-Continue toward the requested outcome. Expand or revise later milestones only as gates clear. Invoke `superpowers-subagent-driven-development-psilon` only when its substantial-task/delegation trigger matches; otherwise execute inline with native tracking and proportionate checkpoints. Ask only when a consequential user choice, external coordination, or authority boundary cannot be resolved safely.
+Continue toward the requested outcome inline with native tracking and proportionate checkpoints. Use `superpowers-subagent-driven-development-psilon` only when the user explicitly chose that mode and its eligibility conditions hold; an accepted plan alone does not select it. Expand later milestones as gates clear. Ask only when a consequential user choice, external coordination, or authority boundary cannot be resolved safely.

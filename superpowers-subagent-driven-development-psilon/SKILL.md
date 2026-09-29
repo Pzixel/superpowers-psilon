@@ -1,11 +1,11 @@
 ---
 name: superpowers-subagent-driven-development-psilon
-description: Use to execute an accepted plan with three or more substantial tasks or two large tasks when write scopes do not overlap, next-task exact-target prerequisites are proved, and delegation beats overhead. Skip small, coupled, overlapping, shared-state-mutation, unresolved Discovery/Provisional, or overhead-dominated plans. Run sequential implementers with task and final review; the primary owns integration; never parallel-dispatch inside.
+description: Use only when the user explicitly chooses subagent-driven execution of an accepted plan with at least three substantial tasks or two large tasks, disjoint write scopes, proved prerequisites, and worthwhile delegation. An accepted plan alone does not select this mode. Skip small, coupled, unresolved, or overhead-dominated work. Run sequential implementers and independent reviews; the controller owns integration.
 ---
 
 # Subagent-Driven Development
 
-> **Codex 5.6 adaptation:** The description is the scope gate. Preserve upstream execution, recovery, and review for qualifying large plans; higher-priority policy controls workspace, branches, commits, tests, models, and integration.
+> **Explicit execution mode:** The user selects this workflow. Higher-priority policy controls workspace, branches, commits, tests, models, and integration.
 
 Run one fresh implementer per task, one task review for applicability/spec/quality, then one integrated final review.
 
@@ -18,6 +18,8 @@ Run one fresh implementer per task, one task review for applicability/spec/quali
 ## Eligibility
 
 Use only in the same session for an accepted plan whose substantial task scopes are independent enough for sequential ownership. Otherwise use durable handoff, native execution, or brainstorm first.
+
+Plan size or a reference from another skill is not authorization to select SDD. Without the user's choice, execute inline under the governing review policy. Once SDD is selected, the controller owns every agent dispatch; implementers and reviewers do not spawn helpers or reviewers.
 
 Every Ready task must have proved load-bearing prerequisites for its exact target. An accepted plan records intent, not factual truth. Reject false prerequisites; resolve unknowns and open `Discovery`/`Provisional` gates before SDD.
 
@@ -60,10 +62,10 @@ Inherit parent model and reasoning by default. Override only when user, policy, 
 - complete 1–2-file transcription/mechanical work: cheapest capable model;
 - multi-file integration, prose implementation, and ordinary review: standard/mid-tier;
 - architecture, subtle concurrency, and final integrated review: most capable available;
-- fix rounds 4–5: at least one tier above the stuck implementer;
+- fix rounds 4–5: fresh context, using a stronger supported model only when available and justified;
 - small scoped re-review: cheap-to-mid tier.
 
-Choose the least costly option that avoids retries. Cheap models can take 2–3× more turns on multi-step work; turn count can erase token savings.
+Choose by total cost to an accepted result, including retries, review, and integration. If already using the strongest available model, use fresh context and improved evidence; lack of a higher tier is not a blocker.
 
 ## Task Loop
 
@@ -90,7 +92,7 @@ Run `scripts/task-brief PLAN_FILE N`; pass its unique path, never the whole plan
 3. brief path, labeled as required outcome and binding constraints;
 4. verified interfaces/decisions from prior tasks that the brief cannot know;
 5. evidence-backed resolution of noticed ambiguity;
-6. report path and contract.
+6. report path and contract, including the no-subagents rule.
 
 Exact contractual values stay in the brief. Never call provisional detail exact. Do not paste accumulated task history; fresh agents need only their task, touched interfaces, and global constraints.
 
@@ -114,7 +116,7 @@ Task review is mandatory and separate from self-review. Require all three verdic
 Give [task-reviewer-prompt.md](task-reviewer-prompt.md):
 
 - task brief, implementer report, and exact review-package paths;
-- binding Global Constraints only—not plan assumptions or process rules;
+- binding Global Constraints and governing architecture/test/authority/delivery requirements—not unverified plan assumptions;
 - exact target and authoritative sources that can prove/disprove prerequisites;
 - stable BASE and HEAD commit/snapshot boundaries.
 
@@ -133,12 +135,16 @@ Applicability failure never enters a code loop first:
 
 Re-run applicability without code when evidence clears the current design. Code starts only after an admissible route exists. Ask the user only for unresolved consequential requirements or authority.
 
-The code loop handles an admitted replacement, spec ❌, Critical/Important issues, or a confirmed spec ⚠️. Minor findings never enter it: ledger `Task <N>: minor (deferred): <finding>` and send them to final review. For plan conflicts, authority wins; resolve autonomously when clear, otherwise ask one consequential question. Never dismiss a finding because the plan mandates it.
+Before a fix dispatch, verify each finding against the requirements, current code, and exact target. Reject an incorrect finding with evidence in the ledger immediately; do not spend fix rounds implementing it. Resolve disputed evidence before dependent work. A ruling cannot waive a requirement or settle a real defect without correction.
+
+The code loop handles an admitted replacement, confirmed spec gaps, and confirmed Critical/Important issues. Minor findings may be deferred only when they are not required for task acceptance: ledger them for final review. For plan conflicts, authority wins; resolve autonomously when clear, otherwise ask one consequential question. Never dismiss a finding because the plan mandates it.
 
 A round is one fix dispatch plus one scoped re-review; maximum five:
 
 - **Rounds 1–3:** resume the implementer with open findings verbatim. If resume is impossible, use a fresh agent with brief, report, and findings.
-- **Rounds 4–5:** use a fresh stronger implementer with brief, report, findings, and: “A prior implementer attempted this task [N] times; you own it now. Read the report file for what was tried.”
+- **Rounds 4–5:** use a fresh implementer, stronger if available and justified, with brief, report, findings, and: “A prior implementer attempted this task [N] times; you own it now. Read the report file for what was tried.”
+
+Five rounds is a ceiling, not a quota. After repeated failure without new evidence, stop retrying and inspect the failed assumptions, required inputs, and attempted fixes. Resume only with a materially changed approach or new evidence; otherwise report the exact unresolved boundary.
 
 Each round fixes, runs outcome-proportionate checks, appends commands/output to the report, and returns the short contract. Re-review only after covering evidence is present; name tests only when admitted. Record a fresh commit/snapshot HEAD and run `scripts/review-package PLAN_FILE FIX_BASE HEAD`; [re-review-prompt.md](re-review-prompt.md) verifies each finding and new breakage only. Add new Critical/Important breakage to the loop; ledger out-of-scope observations as deferred Minor.
 
@@ -150,24 +156,24 @@ Task <N>: fix round <R>/5 (<X> addressed, <Y> open — <findings>; commits <a7>.
 
 Use `snapshots` in snapshot mode. The controller never fixes code; doing so breaks context isolation and skips review.
 
-At round five, stop dispatching and adjudicate every open finding:
+At the cap, or an earlier evidence impasse, stop fix dispatches and resolve every open finding:
 
 - wrong/contestable: park with technical ruling;
-- real but not load-bearing downstream: park as real and deferred;
-- real and load-bearing or plan-breaking: append `Task <N>: BLOCKED — <reason>` and report finding, conflicting plan text, and fix history.
+- real and optional under the governing acceptance criteria: park as real and deferred;
+- required for acceptance, load-bearing, or plan-breaking: keep the task incomplete, append `Task <N>: BLOCKED — <reason>`, and hand off the finding, evidence, fix history, and exact continuation needed.
 
-Parking a structural failure is forbidden. Adjudicate only at the cap; every ruling enters the ledger.
+Parking a structural failure or confirmed Critical/Important defect does not permit task approval. Findings may be adjudicated at any round; every ruling enters the ledger.
 
 ### 6. Complete the Task
 
-After clean review or capped parked rulings, append:
+After clean review or evidence-backed rulings with only permitted optional deferrals, append:
 
 ```text
 Task <N>: complete (commits <base7>..<head7>, review clean)
 Task <N>: complete (commits <base7>..<head7>, <K> parked)
 ```
 
-Use `snapshots` in snapshot mode. Mark the todo complete. Never advance with unreviewed or unadjudicated Critical/Important findings.
+Use `snapshots` in snapshot mode. Mark the todo complete. Never advance with unreviewed or unresolved Critical/Important findings.
 
 ## Final Review
 
