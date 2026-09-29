@@ -1,6 +1,6 @@
 # Superpowers psilon
 
-Eight personal forks of [obra/superpowers](https://github.com/obra/superpowers), adapted for Codex 5.6, plus one repository-authored ClickHouse table-design guard. They use narrow implicit triggers, exact-target evidence gates, proportional workflows, and repository-owned policy.
+Eight personal forks of [obra/superpowers](https://github.com/obra/superpowers) for Codex and Claude Code, plus the repository-authored Dragonfly scripting skill. They use narrow triggers, exact-target evidence gates, proportional workflows, and repository-owned policy. Subagent-driven development is an explicitly selected execution mode.
 
 The original Superpowers plugin is not required.
 
@@ -12,29 +12,51 @@ The original Superpowers plugin is not required.
 |---|---|
 | `superpowers-brainstorming-psilon` | Consequential design uncertainty or coupled-system decomposition |
 | `superpowers-writing-plans-psilon` | Durable multi-stage, coordinated, risky, or cross-session plans |
-| `superpowers-subagent-driven-development-psilon` | Large accepted plans with disjoint scopes and verified prerequisites |
+| `superpowers-subagent-driven-development-psilon` | Explicit user choice, plus a large accepted plan with disjoint scopes and verified prerequisites |
 | `superpowers-dispatching-parallel-agents-psilon` | Two or more proved-independent substantial workstreams |
 | `superpowers-systematic-debugging-psilon` | Observed failures with uncertain root cause |
 | `superpowers-requesting-code-review-psilon` | Independent review at a material integration-risk boundary |
 | `superpowers-receiving-code-review-psilon` | Concrete review feedback to assess or implement |
 | `superpowers-verification-before-completion-psilon` | Fresh proof before production, security, data, concurrency, migration, contract, release, or broad-system completion |
-| `superpowers-clickhouse-table-design-psilon` | Any proposed or actual ClickHouse table creation or schema change |
 | `dragonfly-scripting` | Any Dragonfly server-side scripting work (Lua/EVALSHA design, review, optimization, measurement) |
 
 ## Install for one user
 
-Clone the repository, then link each skill into Codex's user scope:
+Clone the repository, then link its nine skills into the personal skill directories for Codex and Claude Code. Existing links to this checkout are reused; a conflicting destination stops installation without replacing it:
 
 ```bash
 git clone https://github.com/Pzixel/superpowers-psilon.git
 cd superpowers-psilon
 
-for skill in superpowers-*-psilon; do
-  ln -s "$PWD/$skill" "$HOME/.agents/skills/$skill"
+for target in "$HOME/.agents/skills" "$HOME/.claude/skills"; do
+  mkdir -p "$target"
+  for skill in superpowers-*-psilon dragonfly-scripting; do
+    dest="$target/$skill"
+    if [ -e "$dest" ] || [ -L "$dest" ]; then
+      if [ "$(realpath "$dest")" != "$(realpath "$skill")" ]; then
+        printf 'Conflicting skill destination: %s\n' "$dest" >&2
+        exit 1
+      fi
+    else
+      ln -s "$PWD/$skill" "$dest"
+    fi
+  done
 done
 ```
 
-Codex follows skill-directory symlinks. A later `git pull` updates every linked skill. If Codex does not show an update, restart it.
+Both clients follow these directory links. Updates to this checkout update the linked skills; inspect and validate changes before relying on them. Use a fresh session if a running session still holds an older skill body.
+
+Codex's SDD invocation policy is bundled in `agents/openai.yaml`. For Claude Code, merge this entry into the existing `skillOverrides` object in `~/.claude/settings.json`, preserving all other settings:
+
+```json
+{
+  "skillOverrides": {
+    "superpowers-subagent-driven-development-psilon": "user-invocable-only"
+  }
+}
+```
+
+SDD remains available through an explicit `$superpowers-subagent-driven-development-psilon` in Codex or `/superpowers-subagent-driven-development-psilon` in Claude Code. The other skills retain their scoped automatic triggers. See [Codex skills](https://developers.openai.com/codex/skills) and [Claude Code invocation settings](https://code.claude.com/docs/en/skills#override-skill-visibility-from-settings).
 
 ## Validate changes
 
@@ -42,11 +64,13 @@ Codex follows skill-directory symlinks. A later `git pull` updates every linked 
 python3 -m venv .venv
 .venv/bin/pip install -r requirements-dev.txt
 .venv/bin/python scripts/validate-skills.py
+.venv/bin/python scripts/test_review_package.py
 
 scripts=(
   superpowers-brainstorming-psilon/scripts/*.sh
   superpowers-subagent-driven-development-psilon/scripts/*
   superpowers-systematic-debugging-psilon/*.sh
+  dragonfly-scripting/scripts/*.sh
 )
 for script in "${scripts[@]}"; do
   bash -n "$script"
@@ -55,11 +79,11 @@ done
 git diff --check
 ```
 
-GitHub Actions runs the same structural and shell checks and scans the full Git history for secrets.
+GitHub Actions runs the same structural, review-range, and shell checks and scans the full Git history for secrets. Review-range tests use isolated temporary Git repositories; they do not modify this checkout.
 
 ## Maintenance rules
 
-- Keep activation descriptions specific, with positive and negative boundaries; maximum 60 words and 450 characters.
+- Keep activation descriptions specific, with positive and negative boundaries. The validator caps descriptions at 120 words and 1,024 characters; use less when the trigger permits it.
 - Keep each `SKILL.md` at or below 250 lines and 2,500 words.
 - Put optional examples, prompts, and detailed techniques in one-level companion files.
 - Preserve strong gates and exceptions while removing duplicate prose.

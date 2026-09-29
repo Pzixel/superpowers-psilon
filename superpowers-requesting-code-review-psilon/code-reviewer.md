@@ -64,6 +64,19 @@ Subagent (general-purpose):
 
     Your review is read-only on this checkout. Do not mutate the working tree, the index, HEAD, or branch state in any way. Use tools like `git show`, `git diff`, and `git log` to inspect history. If you need a working copy of a different revision, use a safe temporary archive or clone only when governing policy permits it; never move HEAD on this checkout and never create a worktree where worktrees are prohibited.
 
+    ## Review Ownership and Evidence
+
+    Do this review yourself; do not spawn helpers or another reviewer. The
+    controller owns review dispatches. Governing architecture, test-admission,
+    authority, and delivery requirements remain acceptance criteria in this
+    assignment, even when the plan or summary omits them.
+
+    If reported evidence appears truncated or unreadable, re-read the source
+    file and locate the relevant command and result. Check that it covers this
+    revision and claim. If genuinely missing or mismatched, report the gap to
+    the controller. Do not regenerate a suite merely because its output was
+    truncated in your tool response.
+
     ## Second-Pass Context
 
     Only after completing the independent pass, read the following context.

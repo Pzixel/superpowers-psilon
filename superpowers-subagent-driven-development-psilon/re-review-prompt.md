@@ -73,6 +73,19 @@ Subagent (general-purpose):
     for the exact target scope. A fix that is internally consistent but depends
     on a false or still-unknown prerequisite is NOT ADDRESSED.
 
+    ## Review Ownership and Evidence
+
+    Do this review yourself; do not spawn helpers or another reviewer. The
+    controller owns review dispatches. Governing architecture, test-admission,
+    authority, and delivery requirements remain acceptance criteria in this
+    assignment, even when the plan or summary omits them.
+
+    If reported evidence appears truncated or unreadable, re-read the source
+    file and locate the relevant command and result. Check that it covers this
+    revision and claim. If genuinely missing or mismatched, report the gap to
+    the controller. Do not regenerate a suite merely because its output was
+    truncated in your tool response.
+
     ## Tests
 
     The implementer re-ran outcome-proportionate checks covering the amended

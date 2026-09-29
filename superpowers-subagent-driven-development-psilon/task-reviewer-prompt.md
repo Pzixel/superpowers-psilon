@@ -83,6 +83,19 @@ Subagent (general-purpose):
     supported by the authoritative references. Plan authorship does not prove
     target coverage or applicability.
 
+    ## Review Ownership and Evidence
+
+    Do this review yourself; do not spawn helpers or another reviewer. The
+    controller owns review dispatches. Governing architecture, test-admission,
+    authority, and delivery requirements remain acceptance criteria in this
+    assignment, even when the plan or summary omits them.
+
+    If reported evidence appears truncated or unreadable, re-read the source
+    file and locate the relevant command and result. Check that it covers this
+    revision and claim. If genuinely missing or mismatched, report the gap to
+    the controller. Do not regenerate a suite merely because its output was
+    truncated in your tool response.
+
     ## Tests
 
     The implementer already ran outcome-proportionate verification and reported
@@ -132,7 +145,7 @@ Subagent (general-purpose):
     - Edge cases handled?
 
     **Tests:**
-    - Does each new or changed test qualify under governing test policy and verify required observable behavior through an independent oracle?
+    - Does each new or changed permanent or temporary test meet both governing gates (qualifying behavior and plausible defect), with an independent oracle and no mechanical-glue tests?
     - Does admitted verification cover the task's material edge cases?
 
     **Structure:**
@@ -165,7 +178,8 @@ Subagent (general-purpose):
     defect (a test that asserts nothing, verbatim duplication of a logic
     block), that IS a finding — report it as Important, labeled
     plan-mandated. The plan's authorship does not grade its own work; the
-    human decides.
+    controller resolves the finding against governing authority; only an
+    unresolved consequential user-owned choice requires the human.
 
     ## Output Format
 

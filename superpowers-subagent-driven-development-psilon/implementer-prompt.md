@@ -40,7 +40,7 @@ Subagent (general-purpose):
 
     Once you're clear on requirements:
     1. Implement the required outcome and binding constraints; do not force a proposed mechanism that current evidence disproves
-    2. Add or change permanent tests only when each test qualifies under governing test policy; otherwise use the strongest allowed temporary reproduction or focused verification
+    2. Add or change tests only when both the behavior and a plausible defect qualify under governing test policy; temporary tests obey the same exclusions, including mechanical forwarding
     3. Verify implementation works
     4. Commit your work when governing policy authorizes task-level commits; otherwise preserve a reviewable diff
     5. Self-review (see below)
@@ -51,6 +51,14 @@ Subagent (general-purpose):
     **While you work:** Investigate unexpected details and make evidence-backed ordinary decisions autonomously. Ask only when a consequential requirement or authority boundary remains unresolved. Do not guess about contractual behavior.
 
     While iterating, run focused checks when they provide new evidence. After the last relevant change, run one outcome-proportionate verification pass; use a full suite only when the claim's scope requires it.
+
+    ## Agent Ownership
+
+    Complete this assignment yourself. Do not spawn helpers or reviewers.
+    Self-review means inspecting your own work; the controller dispatches the
+    independent reviewer after your report. If the assignment cannot be
+    completed within its scope, return the evidence and required decomposition
+    to the controller instead of creating another agent tree.
 
     ## Code Organization
 
@@ -84,8 +92,8 @@ Subagent (general-purpose):
 
     **How to escalate:** Report back with status BLOCKED or NEEDS_CONTEXT. Describe
     specifically what you're stuck on, what you've tried, and what kind of help you need.
-    The controller can provide more context, re-dispatch with a more capable model,
-    or break the task into smaller pieces.
+    The controller can provide more context, choose a stronger model when available,
+    use fresh context with improved evidence, or split an oversized assignment.
 
     ## Before Reporting Back: Self-Review
 

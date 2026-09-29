@@ -6,7 +6,7 @@ main skill define the actual requirements.
 ```text
 You: I'm using Subagent-Driven Development to execute this plan.
 
-[Setup: governing workspace and branch policy verified]
+[Setup: user explicitly selected SDD; governing workspace and branch policy verified]
 [Read plan file once: docs/superpowers/plans/feature-plan.md]
 [Resolve workspace: scripts/sdd-workspace docs/superpowers/plans/feature-plan.md — no ledger inside, fresh start]
 [Create todos for all tasks]
@@ -46,16 +46,20 @@ Task reviewer: Applicability ✅. Spec ❌:
   - Missing: Progress reporting (spec says "report every 100 items")
   Issues (Important): Magic number (100)
 
-[Fix round 1: resume the implementer with both findings]
-Implementer: Added progress reporting, extracted PROGRESS_INTERVAL constant.
+[Controller verifies both findings: missing reporting violates the spec;
+ the literal 100 is required and has no evidenced defect. Record rejection
+ of the second finding with the spec reference before dispatching a fix.]
+
+[Fix round 1: resume the implementer with the confirmed missing-reporting finding]
+Implementer: Added progress reporting at the specified interval.
   Re-ran test/recovery.test.js — 10/10 passing. Fix report appended.
 
 [Run review-package PLAN_FILE FIX_BASE HEAD; dispatch scoped re-review]
 Re-reviewer: Missing progress reporting — ADDRESSED (src/recovery.js:41).
-  Magic number — ADDRESSED (src/recovery.js:7). New breakage: none.
+  New breakage: none.
   Verdict: all findings addressed.
 
-[Ledger: Task 2: fix round 1/5 (2 addressed, 0 open; commits d4e5f6a..b7c8d9e)]
+[Ledger: Task 2: fix round 1/5 (1 addressed, 0 open; commits d4e5f6a..b7c8d9e)]
 [Ledger: Task 2: complete (commits d4e5f6a..b7c8d9e, review clean)]
 
 ...
