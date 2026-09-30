@@ -79,6 +79,23 @@ pass after the owner-boundary repair. A regression test that never demonstrably
 failed proves the mock, not the fix. One regression at the owner boundary
 covers the bug; do not replay the same scenario at every layer it crosses.
 
+### Closing coverage sweep
+
+The gate above only rejects tests; it never asks what is missing. Before
+reporting a test change as done, list every clause of the authoritative
+specification or contract that has observable behavior: each status code and
+error path, each response field named by the contract, each boundary or
+threshold, each integration point where the feature adds or omits something,
+each mode switch (flag on/off, empty input, provider failure). Next to each
+clause name the one test that owns it, or the reason no test qualifies (a
+framework or typing guarantee, a default constant, a mechanical forwarding).
+A clause with neither gets a test at its owner boundary before the report;
+an excluded clause stays listed with its reason. Include this list in the
+handoff. A clause whose behavior is described in the contract and produced
+by production code is never excluded merely because its owner test needs a
+real boundary (a route, a rendered response, a persisted row) instead of a
+pure function.
+
 ## Junk patterns
 
 The shared checklist for both modes: the authoring gate rejects a new test that
@@ -209,6 +226,7 @@ read-only discovery for the next high-confidence batch.
 
 Report:
 
+- the closing coverage sweep: each contract clause with its owner test or exclusion reason;
 - root cause and removed low-value categories;
 - production owner simplifications;
 - retained false positives and why they remain valuable;
