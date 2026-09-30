@@ -13,8 +13,30 @@ Eight directories in this repository are provenance-named personal forks, not
 upstream plugin installations. The original plugin remains disabled. Each fork
 keeps `superpowers-<upstream-name>-psilon` as both its directory and frontmatter
 name so users can identify its lineage. The current set also contains the repository-authored `dragonfly-scripting`
-skill. The retired ClickHouse guard described below is historical and was not
+skill and the adapted `test-audit` skill. The retired ClickHouse guard described below is historical and was not
 derived from an upstream Superpowers skill.
+
+## Test Audit adaptation: 2026-09-30
+
+`test-audit` comes from commit https://github.com/openclaw/openclaw/commit/80930af448ebabc84174146b56bc106d37fab3b4.
+
+- Preserved the three modes, four authoring questions, all junk-pattern entries,
+  candidate evidence fields, and all eight campaign stages, including keeper
+  plans, independent preservation review, restored-contract mutations, bug
+  controls, and upstream reconciliation.
+- Replaced source-repository paths, branded tools, and language/framework-specific
+  details with current repository commands and policies. Parameterized tests
+  remain one declaration unless rows need different audit decisions.
+- Incorporated the relevant test-value requirements directly: both gates
+  are mandatory, and configuration spelling, dependency/compiler guarantees,
+  source greps, and mechanical forwarding gain no retention exception.
+- Preserved qualifying semantic mappings, exact external representations,
+  interaction/lifetime contracts, and reachable persisted data. The skill states
+  test-body, fake/support, and architectural boundaries without loading policy
+  documents.
+- The behavioral eval contains 20 synthetic, self-contained scenarios with a
+  separate rubric in `test-audit-workbench/`. No private policy documents are
+  distributed. See `test-audit-workbench/EVAL.md` for replay.
 
 ## Current adaptation: 2026-09-29
 
