@@ -13,7 +13,7 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 NAME = re.compile(r"^[a-z0-9-]{1,64}$")
 LINK = re.compile(r"\[[^]]+\]\(([^)]+)\)")
-EXPECTED_SKILLS = 10
+EXPECTED_SKILLS = 11
 # Agent Skills spec caps description at 1024 characters; ~100 words is the
 # skill-creator guidance for the always-loaded metadata level.
 MAX_DESCRIPTION_CHARS = 1024
@@ -89,7 +89,7 @@ def validate_skill(directory: Path) -> None:
 def main() -> None:
     skills = sorted(
         path
-        for pattern in ("superpowers-*-psilon", "dragonfly-scripting", "test-audit")
+        for pattern in ("superpowers-*-psilon", "dragonfly-scripting", "test-audit", "pareto-design-selection")
         for path in ROOT.glob(pattern)
         if path.is_dir()
     )

@@ -13,8 +13,21 @@ Eight directories in this repository are provenance-named personal forks, not
 upstream plugin installations. The original plugin remains disabled. Each fork
 keeps `superpowers-<upstream-name>-psilon` as both its directory and frontmatter
 name so users can identify its lineage. The current set also contains the repository-authored `dragonfly-scripting`
-skill and the adapted `test-audit` skill. The retired ClickHouse guard described below is historical and was not
+and `pareto-design-selection` skills and the adapted `test-audit` skill. The retired ClickHouse guard described below is historical and was not
 derived from an upstream Superpowers skill.
+
+## Pareto Design Selection: 2026-10-01
+
+`pareto-design-selection` is repository-authored with no upstream. It records
+the owner's method for choosing a decision strategy by simulation: isolate the
+pure decision core, read-only production probe with a source for every number,
+a strategy space that always contains the baseline and the cheap extension,
+a calibrated pure simulation over measured inputs, one strategy-by-metric
+table with a Pareto set and a 20% tie threshold, owner choice, then an
+independently reviewed design, read-only production cost measurement, and
+prediction-versus-reality follow-up. Executors are named by role with one
+note for the Claude Code orch plugin. No examples or templates are shipped;
+the skill carries the rules only.
 
 ## Test Audit adaptation: 2026-09-30
 
