@@ -20,7 +20,7 @@ The original Superpowers plugin is not required.
 | `superpowers-verification-before-completion-psilon` | Fresh proof before production, security, data, concurrency, migration, contract, release, or broad-system completion |
 | `dragonfly-scripting` | Any Dragonfly server-side scripting work (Lua/EVALSHA design, review, optimization, measurement) |
 | `test-audit` | Authoring or changing tests, focused test review, or a requested subsystem test-pruning campaign |
-| `pareto-design-selection` | Several candidate decision strategies with a visible cost of error, an owner who decides, and a decision isolable as a pure function; probe, calibrated simulation, Pareto table |
+| `pareto-design-selection` | Several candidate decision strategies with a visible cost of error, an owner who decides, and a pure decision core; sound cheap screening, bounded search, calibrated finalist validation, Pareto table |
 
 `test-audit` preserves the supplied audit and campaign workflows and states its test-value rules directly. Its language-neutral instructions and self-contained 20-case behavioral eval set are described in [test-audit-workbench/EVAL.md](test-audit-workbench/EVAL.md).
 

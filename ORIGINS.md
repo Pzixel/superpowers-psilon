@@ -29,6 +29,29 @@ prediction-versus-reality follow-up. Executors are named by role with one
 note for the Claude Code orch plugin. No examples or templates are shipped;
 the skill carries the rules only.
 
+The owner's 2026-10-01 revision replaces an exhaustive up-front comparison
+with staged read-only discovery, necessary-condition and optimistic-bound
+screening, and iterative selection, mutation, and combination of promising
+families. A failed simplification cannot reject a mechanism it omits; small
+components remain eligible for useful combinations. Search defaults to five
+rounds, three new candidates per round, and three active family representatives;
+two informative rounds without material Pareto progress stop it earlier. Progress
+uses a 5% search tie threshold against the frontier at the last progress checkpoint,
+allowing small gains to accumulate without crediting already-available advantages.
+Search percentages use the positive reference value; threshold equality is material.
+Controls remain available, limits do not reset for retries or model changes, and unsafe
+unbounded operations need an explicit ceiling. Each investigation batch declares
+its work; failed batches and additional repair or observation batches consume
+rounds. Final validation has a separate bounded reserve: one batch and at most
+one corrective rerun, without new or changed strategy rules. Absolute thresholds
+come from the goal or measured scale; otherwise the owner supplies them.
+Fidelity grows only when it can change the choice; final recommendations still
+require calibrated validation, sensitivity checks, a complete evidence table,
+and owner choice. The cheap extension must be resolved before a recommendation;
+bounded exhaustion can instead report it as unresolved with an explicit gap. Exhaustion
+reports incomplete evidence or the best validated set found, never a global
+optimum. Discovery metadata now describes this bounded search.
+
 ## Test Audit adaptation: 2026-09-30
 
 `test-audit` comes from commit https://github.com/openclaw/openclaw/commit/80930af448ebabc84174146b56bc106d37fab3b4.
