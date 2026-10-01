@@ -1,6 +1,6 @@
 # Superpowers psilon
 
-Eight personal forks of [obra/superpowers](https://github.com/obra/superpowers) for Codex and Claude Code, plus the repository-authored Dragonfly scripting skill and the adapted Test Audit skill. They use narrow triggers, exact-target evidence gates, proportional workflows, and repository-owned policy. Subagent-driven development is an explicitly selected execution mode.
+Eight personal forks of [obra/superpowers](https://github.com/obra/superpowers) for Codex and Claude Code, plus the repository-authored Dragonfly scripting skill, the adapted Test Audit skill, and the repository-authored Pareto Design Selection skill. They use narrow triggers, exact-target evidence gates, proportional workflows, and repository-owned policy. Subagent-driven development is an explicitly selected execution mode.
 
 The original Superpowers plugin is not required.
 
@@ -20,12 +20,13 @@ The original Superpowers plugin is not required.
 | `superpowers-verification-before-completion-psilon` | Fresh proof before production, security, data, concurrency, migration, contract, release, or broad-system completion |
 | `dragonfly-scripting` | Any Dragonfly server-side scripting work (Lua/EVALSHA design, review, optimization, measurement) |
 | `test-audit` | Authoring or changing tests, focused test review, or a requested subsystem test-pruning campaign |
+| `pareto-design-selection` | Several candidate decision strategies with a visible cost of error, an owner who decides, and a decision isolable as a pure function; probe, calibrated simulation, Pareto table |
 
 `test-audit` preserves the supplied audit and campaign workflows and states its test-value rules directly. Its language-neutral instructions and self-contained 20-case behavioral eval set are described in [test-audit-workbench/EVAL.md](test-audit-workbench/EVAL.md).
 
 ## Install for one user
 
-Clone the repository, then link its ten skills into the personal skill directories for Codex and Claude Code. Existing links to this checkout are reused; a conflicting destination stops installation without replacing it:
+Clone the repository, then link its eleven skills into the personal skill directories for Codex and Claude Code. Existing links to this checkout are reused; a conflicting destination stops installation without replacing it:
 
 ```bash
 git clone https://github.com/Pzixel/superpowers-psilon.git
@@ -33,7 +34,7 @@ cd superpowers-psilon
 
 for target in "$HOME/.agents/skills" "$HOME/.claude/skills"; do
   mkdir -p "$target"
-  for skill in superpowers-*-psilon dragonfly-scripting test-audit; do
+  for skill in superpowers-*-psilon dragonfly-scripting test-audit pareto-design-selection; do
     dest="$target/$skill"
     if [ -e "$dest" ] || [ -L "$dest" ]; then
       if [ "$(realpath "$dest")" != "$(realpath "$skill")" ]; then
